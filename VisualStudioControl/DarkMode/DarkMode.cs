@@ -41,9 +41,13 @@ namespace VisualStudioControl
             void UpdateColorControls(Control myControl)
             {
                 if (enabled)
+                {
                     SetWindowTheme(myControl.Handle, "DarkMode_Explorer", null);
+                }
                 else
+                {
                     SetWindowTheme(myControl.Handle, "Explorer", null);
+                }
 
                 if(myControl is VisualStudioTabControl)
                 {
@@ -75,7 +79,9 @@ namespace VisualStudioControl
                 }
 
                 foreach (Control subC in myControl.Controls)
+                {
                     UpdateColorControls(subC);
+                }
             }
             #endregion
 
@@ -84,9 +90,13 @@ namespace VisualStudioControl
             form.ForeColor = other;
 
             if (enabled)
+            {
                 SetWindowTheme(form.Handle, "DarkMode_Explorer", null);
+            }
             else
+            {
                 SetWindowTheme(form.Handle, "Explorer", null);
+            }
 
             #endregion
 
