@@ -13,6 +13,11 @@ namespace VisualStudioControl
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 
+        private static bool IsWindows10OrGreater(int build = -1)
+        {
+            return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
+        }
+
         public static bool UseImmersiveDarkMode(Form form, bool enabled)
         {
             Color main, other;
@@ -23,7 +28,7 @@ namespace VisualStudioControl
             }
             else
             {
-                main = SystemColors.Control;
+                main = Color.WhiteSmoke;
                 other = Color.Black;
             }
 
@@ -43,9 +48,25 @@ namespace VisualStudioControl
                 if(myControl is VisualStudioTabControl)
                 {
                     if (enabled)
+                    {
                         ((VisualStudioTabControl)myControl).Theme = VisualStudioTabControlTheme.Dark;
+                    }
                     else
+                    {
                         ((VisualStudioTabControl)myControl).Theme = VisualStudioTabControlTheme.Light;
+                    }      
+                }
+                else if (myControl is IDarkMode)
+                {
+                    IDarkMode mode = (IDarkMode)myControl;
+                    if (enabled)
+                    {
+                        mode.DarkMode();
+                    }
+                    else
+                    {
+                        mode.WhiteMode();
+                    }
                 }
                 else
                 {
@@ -84,11 +105,6 @@ namespace VisualStudioControl
             #endregion
 
             return false;
-        }
-
-        private static bool IsWindows10OrGreater(int build = -1)
-        {
-            return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
         }
     }
 }
