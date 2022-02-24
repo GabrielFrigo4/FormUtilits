@@ -62,7 +62,7 @@
             this.visualStudioTabControl1.Name = "visualStudioTabControl1";
             this.visualStudioTabControl1.SelectedIndex = 0;
             this.visualStudioTabControl1.SelectedTextColor = System.Drawing.Color.Black;
-            this.visualStudioTabControl1.ShowClosingButton = true;
+            this.visualStudioTabControl1.ShowClosingButton = false;
             this.visualStudioTabControl1.ShowClosingMessage = false;
             this.visualStudioTabControl1.Size = new System.Drawing.Size(800, 450);
             this.visualStudioTabControl1.TabIndex = 0;
