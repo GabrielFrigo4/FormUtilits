@@ -39,10 +39,10 @@ namespace VisualStudioControl
                 switch(theme)
                 {
                     case VisualStudioTabControlTheme.Light:
-                        HeaderColor = Color.FromArgb(237, 238, 242);
-                        ActiveColor = Color.FromArgb(1, 122, 204);
+                        HeaderColor = Color.White;
+                        ActiveColor = Color.LightGray;
+                        DesactiveColor = Color.FromArgb(236, 236, 236);
                         HorizontalLineColor = Color.FromArgb(1, 122, 204);
-                        closingButtonBackColor = Color.FromArgb(247, 248, 252);
                         closingButtonColor = Color.Black;
                         selectedTextColor = Color.Black;
                         TextColor = Color.Black;
@@ -50,9 +50,9 @@ namespace VisualStudioControl
                         break;
                     case VisualStudioTabControlTheme.Blue:
                         HeaderColor = Color.FromArgb(54, 78, 114);
-                        ActiveColor = Color.FromArgb(247, 238, 153);
-                        HorizontalLineColor = Color.FromArgb(247, 238, 153);
-                        closingButtonBackColor = Color.FromArgb(71, 192, 254);
+                        ActiveColor = Color.FromArgb(245, 204, 132);
+                        DesactiveColor = Color.FromArgb(65, 90, 130);
+                        HorizontalLineColor = Color.FromArgb(245, 204, 132);
                         closingButtonColor = Color.Black;
                         selectedTextColor = Color.Black;
                         TextColor = Color.White;
@@ -60,9 +60,9 @@ namespace VisualStudioControl
                         break;
                     case VisualStudioTabControlTheme.Dark:
                         HeaderColor = Color.FromArgb(45, 45, 48);
-                        ActiveColor = Color.FromArgb(0, 122, 204);
+                        ActiveColor = Color.FromArgb(78, 78, 84);
+                        DesactiveColor = Color.FromArgb(54, 54, 58);
                         HorizontalLineColor = Color.LightBlue;
-                        closingButtonBackColor = Color.FromArgb(55, 55, 58);
                         closingButtonColor = Color.White;
                         selectedTextColor = Color.White;
                         TextColor = Color.White;
@@ -75,7 +75,12 @@ namespace VisualStudioControl
         /// <summary>
         ///     The color of the active tab header
         /// </summary>
-        private Color activeColor = Color.FromArgb(0, 122, 204);
+        private Color activeColor = Color.LightGray;
+
+        /// <summary>
+        ///     The color of the active tab header
+        /// </summary>
+        private Color desactiveColor = Color.FromArgb(236, 236, 236);
 
         /// <summary>
         ///     The color of the background of the Tab
@@ -91,11 +96,6 @@ namespace VisualStudioControl
         ///     Color of the closing button
         /// </summary>
         private Color closingButtonColor = Color.White;
-
-        /// <summary>
-        ///     BackColor of the closing button
-        /// </summary>
-        private Color closingButtonBackColor = Color.WhiteSmoke;
 
         /// <summary>
         ///     Message for the user before losing
@@ -134,20 +134,6 @@ namespace VisualStudioControl
             }
             set
             {
-                if (showClosingButton != value && showClosingButton == false)
-                {
-                    foreach (TabPage page in TabPages)
-                    {
-                        page.Text += "  ";
-                    }
-                }
-                else if (showClosingButton != value && showClosingButton == true)
-                {
-                    foreach (TabPage page in TabPages)
-                    {
-                        page.Text = page.Text.Remove(page.Text.Length - 2);
-                    }
-                }
                 showClosingButton = value;
             } 
         }
@@ -169,6 +155,7 @@ namespace VisualStudioControl
             DoubleBuffered = true;
             SizeMode = TabSizeMode.Normal;
             AllowDrop = true;
+            DrawMode = TabDrawMode.OwnerDrawFixed;
         }
 
         [Category("Colors"), Browsable(true), Description("The color of the selected page")]
@@ -182,6 +169,20 @@ namespace VisualStudioControl
             set
             {
                 this.activeColor = value;
+            }
+        }
+
+        [Category("Colors"), Browsable(true), Description("The color of the selected page")]
+        public Color DesactiveColor
+        {
+            get
+            {
+                return this.desactiveColor;
+            }
+
+            set
+            {
+                this.desactiveColor = value;
             }
         }
 
@@ -227,23 +228,6 @@ namespace VisualStudioControl
             set
             {
                 this.closingButtonColor = value;
-            }
-        }
-
-        /// <summary>
-        ///     The backcolor of the closing button
-        /// </summary>
-        [Category("Colors"), Browsable(true), Description("The color of the closing button")]
-        public Color ClosingButtonBackColor
-        {
-            get
-            {
-                return this.closingButtonBackColor;
-            }
-
-            set
-            {
-                this.closingButtonBackColor = value;
             }
         }
 
@@ -390,7 +374,7 @@ namespace VisualStudioControl
                         new Size(GetTabRect(i).Width + 2, GetTabRect(i).Height + 2));
 
                     var r = this.GetTabRect(i);
-                    r.Offset(r.Width - 18, Header.Height / 2 - 9);
+                    r.Offset(r.Width - 19, Header.Height / 2 - 9);
                     r.Width = 14;
                     r.Height = 14;
                     if (!r.Contains(p))
@@ -473,10 +457,8 @@ namespace VisualStudioControl
             for (var i = 0; i < TabCount; i++)
             {
                 var Header = new Rectangle(
-                    new Point(GetTabRect(i).Location.X - 2, GetTabRect(i).Location.Y - 2),
-                    new Size(GetTabRect(i).Width + 2, GetTabRect(i).Height + 2));
-                Brush ClosingColorBrush = new SolidBrush(this.closingButtonColor);
-                Brush ClosingBackColorBrush = new SolidBrush(this.closingButtonBackColor);
+                    new Point(GetTabRect(i).Location.X - 2, GetTabRect(i).Location.Y - 1),
+                    new Size(GetTabRect(i).Width + 2, GetTabRect(i).Height + 3));
 
                 if (i == SelectedIndex)
                 {
@@ -487,6 +469,9 @@ namespace VisualStudioControl
                     Drawer.FillRectangle(
                         new SolidBrush(this.activeColor),
                         new Rectangle(Header.X, Header.Y, Header.Width, Header.Height));
+
+                    // Draws the line top of the color when it is selected
+                    Drawer.DrawLine(new Pen(this.horizLineColor, 4.5f), new Point(Header.X, Header.Y), new Point(Header.X + Header.Width, Header.Y));
 
                     // Draws the title of the page
                     Drawer.DrawString(
@@ -499,14 +484,17 @@ namespace VisualStudioControl
                     // Draws the closing button
                     if (this.ShowClosingButton)
                     {
+                        Brush ClosingColorBrush = new SolidBrush(this.closingButtonColor);
+                        Brush ClosingBackColorBrush = new SolidBrush(this.activeColor);
+
                         var r = this.GetTabRect(i);
-                        r.Offset(r.Width - 18, Header.Height / 2 - 9);
+                        r.Offset(r.Width - 19, Header.Height / 2 - 9);
                         r.Width = 14;
                         r.Height = 14;
 
                         Drawer.FillRectangle(ClosingBackColorBrush, r);
 
-                        e.Graphics.DrawString("X", new Font(FontFamily.GenericSansSerif, 8f, FontStyle.Bold), ClosingColorBrush, Header.Right - 18, Header.Height / 2 - 8);
+                        e.Graphics.DrawString("X", new Font(FontFamily.GenericSansSerif, 8f, FontStyle.Bold), ClosingColorBrush, Header.Right - 19, Header.Height / 2 - 8);
                         predraggedTab = getPointedTab();
 
                         Drawer.DrawRectangle(new Pen(ClosingColorBrush, 2), r);
@@ -514,13 +502,37 @@ namespace VisualStudioControl
                 }
                 else
                 {
-                    // Simply draws the header when it is not selected
+                    // Draws the back of the color when it isn't selected
+                    Drawer.FillRectangle(
+                        new SolidBrush(this.desactiveColor),
+                        new Rectangle(Header.X, Header.Y, Header.Width, Header.Height));
+
+                    // Draws the header when it is not selected
                     Drawer.DrawString(
                         TabPages[i].Text,
                         Font,
                         new SolidBrush(this.textColor),
                         Header,
                         this.CenterSringFormat);
+
+                    // Draws the closing button
+                    if (this.ShowClosingButton)
+                    {
+                        Brush ClosingColorBrush = new SolidBrush(this.closingButtonColor);
+                        Brush ClosingBackColorBrush = new SolidBrush(this.desactiveColor);
+
+                        var r = this.GetTabRect(i);
+                        r.Offset(r.Width - 19, Header.Height / 2 - 9);
+                        r.Width = 14;
+                        r.Height = 14;
+
+                        Drawer.FillRectangle(ClosingBackColorBrush, r);
+
+                        e.Graphics.DrawString("X", new Font(FontFamily.GenericSansSerif, 8f, FontStyle.Bold), ClosingColorBrush, Header.Right - 19, Header.Height / 2 - 8);
+                        predraggedTab = getPointedTab();
+
+                        Drawer.DrawRectangle(new Pen(ClosingColorBrush, 2), r);
+                    }
                 }
             }
 
