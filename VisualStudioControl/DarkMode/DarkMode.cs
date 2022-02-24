@@ -18,7 +18,7 @@ namespace VisualStudioControl
             return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
         }
 
-        public static bool UseImmersiveDarkMode(Form form, bool enabled)
+        public static bool UseImmersiveDarkMode(Form form, bool enabled = true, Func<Control, Color, Color, bool>? newFuncs = null)
         {
             Color main, other;
             if (enabled)
@@ -70,6 +70,14 @@ namespace VisualStudioControl
                     else
                     {
                         mode.WhiteMode();
+                    }
+                }
+                else if (newFuncs != null)
+                {
+                    if(!newFuncs.Invoke(myControl, main, other))
+                    {
+                        myControl.BackColor = main;
+                        myControl.ForeColor = other;
                     }
                 }
                 else
