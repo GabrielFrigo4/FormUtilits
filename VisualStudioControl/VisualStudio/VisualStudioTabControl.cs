@@ -66,7 +66,7 @@ namespace VisualStudioControl
                         DesactiveColor = Color.FromArgb(54, 54, 58);
                         HorizontalLineColor = Color.LightBlue;
                         ClosingButtonColor = Color.White;
-                        ClosingButtonColorMouseUp = Color.DarkRed;
+                        ClosingButtonColorMouseUp = Color.FromArgb(200, 0, 0);
                         SelectedTextColor = Color.White;
                         TextColor = Color.White;
                         BackTabColor = Color.FromArgb(28, 28, 28);
@@ -551,11 +551,11 @@ namespace VisualStudioControl
                         ButtonRect.Width = 14;
                         ButtonRect.Height = 14;
 
-                        if (GetPointedButtonClose(ButtonRect))
+                        if (GetPointedButtonClose(ButtonRect) && TabPages[i] == GetPointedTab())
                         {
                             DrawButton(closingButtonColorMouseUp, ButtonRect, Header, Drawer);
                         }
-                        else
+                        else if(TabPages[i] == GetPointedTab())
                         {
                             DrawButton(this.activeColor, ButtonRect, Header, Drawer);
                         }
