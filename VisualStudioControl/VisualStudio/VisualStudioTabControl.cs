@@ -43,8 +43,9 @@ namespace VisualStudioControl
                         ActiveColor = Color.LightGray;
                         DesactiveColor = Color.FromArgb(236, 236, 236);
                         HorizontalLineColor = Color.FromArgb(1, 122, 204);
-                        closingButtonColor = Color.Black;
-                        selectedTextColor = Color.Black;
+                        ClosingButtonColor = Color.Black;
+                        ClosingButtonColorMouseUp = Color.Red;
+                        SelectedTextColor = Color.Black;
                         TextColor = Color.Black;
                         BackTabColor = Color.WhiteSmoke;
                         break;
@@ -53,8 +54,9 @@ namespace VisualStudioControl
                         ActiveColor = Color.FromArgb(245, 204, 132);
                         DesactiveColor = Color.FromArgb(65, 90, 130);
                         HorizontalLineColor = Color.FromArgb(245, 204, 132);
-                        closingButtonColor = Color.Black;
-                        selectedTextColor = Color.Black;
+                        ClosingButtonColor = Color.Black;
+                        ClosingButtonColorMouseUp = Color.IndianRed;
+                        SelectedTextColor = Color.Black;
                         TextColor = Color.White;
                         BackTabColor = Color.FromArgb(64, 88, 124);
                         break;
@@ -63,8 +65,9 @@ namespace VisualStudioControl
                         ActiveColor = Color.FromArgb(78, 78, 84);
                         DesactiveColor = Color.FromArgb(54, 54, 58);
                         HorizontalLineColor = Color.LightBlue;
-                        closingButtonColor = Color.White;
-                        selectedTextColor = Color.White;
+                        ClosingButtonColor = Color.White;
+                        ClosingButtonColorMouseUp = Color.DarkRed;
+                        SelectedTextColor = Color.White;
                         TextColor = Color.White;
                         BackTabColor = Color.FromArgb(28, 28, 28);
                         break;
@@ -98,6 +101,11 @@ namespace VisualStudioControl
         private Color closingButtonColor = Color.White;
 
         /// <summary>
+        ///     Color of the closing button
+        /// </summary>
+        private Color closingButtonColorMouseUp = Color.Red;
+
+        /// <summary>
         ///     Message for the user before losing
         /// </summary>
         private string closingMessage = string.Empty;
@@ -115,7 +123,7 @@ namespace VisualStudioControl
         /// <summary>
         ///     A random page will be used to store a tab that will be deplaced in the run-time
         /// </summary>
-        private TabPage predraggedTab;
+        private TabPage? predraggedTab;
 
         /// <summary>
         ///     The color of the text
@@ -232,6 +240,23 @@ namespace VisualStudioControl
         }
 
         /// <summary>
+        ///     The color of the closing button with mouse up
+        /// </summary>
+        [Category("Colors"), Browsable(true), Description("The color of the closing button")]
+        public Color ClosingButtonColorMouseUp
+        {
+            get
+            {
+                return this.closingButtonColorMouseUp;
+            }
+
+            set
+            {
+                this.closingButtonColorMouseUp = value;
+            }
+        }
+
+        /// <summary>
         ///     The message that will be shown before closing.
         /// </summary>
         [Category("Options"), Browsable(true), Description("The message that will be shown before closing.")]
@@ -316,7 +341,8 @@ namespace VisualStudioControl
         /// </summary>
 		protected override void OnFontChanged(EventArgs e)
         {
-            IntPtr hFont = this.Font.ToHfont();
+            Font font = new Font(this.Font.FontFamily, this.Font.Size, this.Font.Style, this.Font.Unit, this.Font.GdiCharSet, this.Font.GdiVerticalFont);
+            IntPtr hFont = font.ToHfont();
             NativeMethods.SendMessage(this.Handle, NativeMethods.WM_SETFONT, hFont, (IntPtr)(-1));
             NativeMethods.SendMessage(this.Handle, NativeMethods.WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
             this.UpdateStyles();
@@ -341,14 +367,18 @@ namespace VisualStudioControl
         /// <param name="drgevent"></param>
         protected override void OnDragOver(DragEventArgs drgevent)
         {
-            var draggedTab = (TabPage)drgevent.Data.GetData(typeof(TabPage));
-            var pointedTab = getPointedTab();
+            TabPage? draggedTab = null;
+            if (drgevent.Data != null)
+            {
+                draggedTab = (TabPage)drgevent.Data.GetData(typeof(TabPage));
+            }
+            var pointedTab = GetPointedTab();
 
             if (ReferenceEquals(draggedTab, predraggedTab) && pointedTab != null)
             {
                 drgevent.Effect = DragDropEffects.Move;
 
-                if (!ReferenceEquals(pointedTab, draggedTab))
+                if (!ReferenceEquals(pointedTab, draggedTab) && draggedTab != null)
                 {
                     this.ReplaceTabPages(draggedTab, pointedTab);
                 }
@@ -363,7 +393,7 @@ namespace VisualStudioControl
         /// <param name="e"></param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            predraggedTab = getPointedTab();
+            predraggedTab = GetPointedTab();
             var p = e.Location;
             if (ShowClosingButton)
             {
@@ -410,7 +440,19 @@ namespace VisualStudioControl
                 this.DoDragDrop(predraggedTab, DragDropEffects.Move);
             }
 
+            Refresh();
+
             base.OnMouseMove(e);
+        }
+
+        /// <summary>
+        ///     Refresh paint
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            Refresh();
+            base.OnMouseLeave(e);
         }
 
         /// <summary>
@@ -429,8 +471,7 @@ namespace VisualStudioControl
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            var g = e.Graphics;
-            var Drawer = g;
+            var Drawer = e.Graphics;
 
             Drawer.SmoothingMode = SmoothingMode.HighQuality;
             Drawer.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -456,102 +497,116 @@ namespace VisualStudioControl
 
             for (var i = 0; i < TabCount; i++)
             {
-                var Header = new Rectangle(
+                 var Header = new Rectangle(
                     new Point(GetTabRect(i).Location.X - 2, GetTabRect(i).Location.Y - 1),
                     new Size(GetTabRect(i).Width + 2, GetTabRect(i).Height + 3));
 
+                //DrawTabPage
+                void DrawTabPage(Color tabColor, Rectangle HeaderRec, TabPage tabPage, Graphics DrawerTap)
+                {
+                    // Draws the back of the color when it is selected
+                    DrawerTap.FillRectangle(
+                        new SolidBrush(tabColor),
+                        new Rectangle(HeaderRec.X, HeaderRec.Y, HeaderRec.Width, HeaderRec.Height));
+
+                    // Draws the title of the page
+                    DrawerTap.DrawString(
+                        tabPage.Text,
+                        Font,
+                        new SolidBrush(this.selectedTextColor),
+                        HeaderRec,
+                        this.CenterSringFormat);
+                }
+
+                //DrawButton
+                void DrawButton(Color buttonColor, Rectangle ButtonRect, Rectangle HeaderRec, Graphics DrawerTap)
+                {
+                    Brush ClosingColorBrush = new SolidBrush(this.closingButtonColor);
+                    Brush ClosingBackColorBrush = new SolidBrush(buttonColor);
+
+                    DrawerTap.FillRectangle(ClosingBackColorBrush, ButtonRect);
+
+                    e.Graphics.DrawString("X", new Font(FontFamily.GenericSansSerif, 8f, FontStyle.Bold), ClosingColorBrush, HeaderRec.Right - 19, HeaderRec.Height / 2 - 8);
+                    predraggedTab = GetPointedTab();
+
+                    DrawerTap.DrawRectangle(new Pen(ClosingColorBrush, 2), ButtonRect);
+                }
+
+                // Draws the back of the header 
+                Drawer.FillRectangle(new SolidBrush(this.headerColor), Header);
+
                 if (i == SelectedIndex)
                 {
-                    // Draws the back of the header 
-                    Drawer.FillRectangle(new SolidBrush(this.headerColor), Header);
-
-                    // Draws the back of the color when it is selected
-                    Drawer.FillRectangle(
-                        new SolidBrush(this.activeColor),
-                        new Rectangle(Header.X, Header.Y, Header.Width, Header.Height));
+                    // Drawd tapPage
+                    DrawTabPage(this.activeColor, Header, TabPages[i], Drawer);
 
                     // Draws the line top of the color when it is selected
                     Drawer.DrawLine(new Pen(this.horizLineColor, 4.5f), new Point(Header.X, Header.Y), new Point(Header.X + Header.Width, Header.Y));
 
-                    // Draws the title of the page
-                    Drawer.DrawString(
-                        TabPages[i].Text,
-                        Font,
-                        new SolidBrush(this.selectedTextColor),
-                        Header,
-                        this.CenterSringFormat);
+                    // Draws the closing button
+                    if (this.ShowClosingButton)
+                    {
+                        var ButtonRect = this.GetTabRect(i);
+                        ButtonRect.Offset(ButtonRect.Width - 19, Header.Height / 2 - 9);
+                        ButtonRect.Width = 14;
+                        ButtonRect.Height = 14;
+
+                        if (GetPointedButtonClose(ButtonRect))
+                        {
+                            DrawButton(closingButtonColorMouseUp, ButtonRect, Header, Drawer);
+                        }
+                        else
+                        {
+                            DrawButton(this.activeColor, ButtonRect, Header, Drawer);
+                        }
+                    }
+                }
+                else if (TabPages[i] == GetPointedTab())
+                {
+                    // Drawd tapPage
+                    DrawTabPage(this.activeColor, Header, TabPages[i], Drawer);
 
                     // Draws the closing button
                     if (this.ShowClosingButton)
                     {
-                        Brush ClosingColorBrush = new SolidBrush(this.closingButtonColor);
-                        Brush ClosingBackColorBrush = new SolidBrush(this.activeColor);
+                        var ButtonRect = this.GetTabRect(i);
+                        ButtonRect.Offset(ButtonRect.Width - 19, Header.Height / 2 - 9);
+                        ButtonRect.Width = 14;
+                        ButtonRect.Height = 14;
 
-                        var r = this.GetTabRect(i);
-                        r.Offset(r.Width - 19, Header.Height / 2 - 9);
-                        r.Width = 14;
-                        r.Height = 14;
-
-                        Drawer.FillRectangle(ClosingBackColorBrush, r);
-
-                        e.Graphics.DrawString("X", new Font(FontFamily.GenericSansSerif, 8f, FontStyle.Bold), ClosingColorBrush, Header.Right - 19, Header.Height / 2 - 8);
-                        predraggedTab = getPointedTab();
-
-                        Drawer.DrawRectangle(new Pen(ClosingColorBrush, 2), r);
+                        if (GetPointedButtonClose(ButtonRect))
+                        {
+                            DrawButton(closingButtonColorMouseUp, ButtonRect, Header, Drawer);
+                        }
+                        else
+                        {
+                            DrawButton(this.activeColor, ButtonRect, Header, Drawer);
+                        }
                     }
                 }
                 else
                 {
-                    // Draws the back of the color when it isn't selected
-                    Drawer.FillRectangle(
-                        new SolidBrush(this.desactiveColor),
-                        new Rectangle(Header.X, Header.Y, Header.Width, Header.Height));
-
-                    // Draws the header when it is not selected
-                    Drawer.DrawString(
-                        TabPages[i].Text,
-                        Font,
-                        new SolidBrush(this.textColor),
-                        Header,
-                        this.CenterSringFormat);
-
-                    // Draws the closing button
-                    if (this.ShowClosingButton)
-                    {
-                        Brush ClosingColorBrush = new SolidBrush(this.closingButtonColor);
-                        Brush ClosingBackColorBrush = new SolidBrush(this.desactiveColor);
-
-                        var r = this.GetTabRect(i);
-                        r.Offset(r.Width - 19, Header.Height / 2 - 9);
-                        r.Width = 14;
-                        r.Height = 14;
-
-                        Drawer.FillRectangle(ClosingBackColorBrush, r);
-
-                        e.Graphics.DrawString("X", new Font(FontFamily.GenericSansSerif, 8f, FontStyle.Bold), ClosingColorBrush, Header.Right - 19, Header.Height / 2 - 8);
-                        predraggedTab = getPointedTab();
-
-                        Drawer.DrawRectangle(new Pen(ClosingColorBrush, 2), r);
-                    }
+                    // Drawd tapPage
+                    DrawTabPage(this.desactiveColor, Header, TabPages[i], Drawer);
                 }
+
+                // Draws the horizontal line
+                Drawer.DrawLine(new Pen(this.horizLineColor, 5), new Point(0, ItemSize.Height + 4), new Point(Width, ItemSize.Height + 4));
+
+                // Draws the background of the tab control
+                Drawer.FillRectangle(new SolidBrush(this.backTabColor), new Rectangle(0, ItemSize.Height + 4, Width, Height - ItemSize.Height));
+
+                // Draws the border of the TabControl
+                Drawer.DrawRectangle(new Pen(this.borderColor, 2), new Rectangle(0, 0, Width, Height));
+                Drawer.InterpolationMode = InterpolationMode.HighQualityBicubic;
             }
-
-            // Draws the horizontal line
-            Drawer.DrawLine(new Pen(this.horizLineColor, 5), new Point(0, ItemSize.Height+4), new Point(Width, ItemSize.Height+4));
-
-            // Draws the background of the tab control
-            Drawer.FillRectangle(new SolidBrush(this.backTabColor), new Rectangle(0, ItemSize.Height+4, Width, Height - ItemSize.Height));
-
-            // Draws the border of the TabControl
-            Drawer.DrawRectangle(new Pen(this.borderColor, 2), new Rectangle(0, 0, Width, Height));
-            Drawer.InterpolationMode = InterpolationMode.HighQualityBicubic;
         }
 
         /// <summary>
         ///     Gets the pointed tab
         /// </summary>
         /// <returns></returns>
-        private TabPage getPointedTab()
+        private TabPage? GetPointedTab()
         {
             for (var i = 0; i <= this.TabPages.Count - 1; i++)
             {
@@ -562,6 +617,22 @@ namespace VisualStudioControl
             }
 
             return null;
+        }
+
+        /// <summary>
+        ///     Gets the pointed button close
+        /// </summary>
+        /// <returns></returns>
+        private bool GetPointedButtonClose(Rectangle buttonRect)
+        {
+            if (buttonRect.Contains(this.PointToClient(Cursor.Position)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

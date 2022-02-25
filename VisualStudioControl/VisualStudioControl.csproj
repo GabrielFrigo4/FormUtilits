@@ -9,6 +9,14 @@
     <PackageProjectUrl>https://github.com/GabrielFrigo4/VisualStudioControl</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GabrielFrigo4/VisualStudioControl</RepositoryUrl>
     <Copyright>MIT</Copyright>
+    <PackageIcon>VS2022.jpg</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\OneDrive\Imagens\Saved Pictures\Ico\VS2022.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

@@ -56,13 +56,14 @@
             this.visualStudioTabControl1.DesactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(90)))), ((int)(((byte)(130)))));
             this.visualStudioTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.visualStudioTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.visualStudioTabControl1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.visualStudioTabControl1.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(78)))), ((int)(((byte)(114)))));
             this.visualStudioTabControl1.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(204)))), ((int)(((byte)(132)))));
             this.visualStudioTabControl1.Location = new System.Drawing.Point(0, 0);
             this.visualStudioTabControl1.Name = "visualStudioTabControl1";
             this.visualStudioTabControl1.SelectedIndex = 0;
             this.visualStudioTabControl1.SelectedTextColor = System.Drawing.Color.Black;
-            this.visualStudioTabControl1.ShowClosingButton = false;
+            this.visualStudioTabControl1.ShowClosingButton = true;
             this.visualStudioTabControl1.ShowClosingMessage = false;
             this.visualStudioTabControl1.Size = new System.Drawing.Size(800, 450);
             this.visualStudioTabControl1.TabIndex = 0;
@@ -74,10 +75,11 @@
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(88)))), ((int)(((byte)(124)))));
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
+            this.tabPage1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tabPage1.Location = new System.Drawing.Point(4, 32);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(792, 417);
+            this.tabPage1.Size = new System.Drawing.Size(792, 414);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
@@ -109,7 +111,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(792, 417);
+            this.tabPage2.Size = new System.Drawing.Size(192, 67);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             // 
@@ -119,7 +121,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(792, 417);
+            this.tabPage3.Size = new System.Drawing.Size(192, 67);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             // 
@@ -129,7 +131,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(792, 417);
+            this.tabPage4.Size = new System.Drawing.Size(192, 67);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "tabPage4";
             // 
@@ -139,7 +141,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(792, 417);
+            this.tabPage5.Size = new System.Drawing.Size(192, 67);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "tabPage5";
             // 
