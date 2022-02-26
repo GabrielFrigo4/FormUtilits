@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualStudioControl
+namespace VisualStudioControl;
+public interface IDarkMode
 {
-    public interface IDarkMode
-    {
-        void WhiteMode();
-        void DarkMode();
-    }
+    void WhiteMode();
+    void DarkMode();
 }
