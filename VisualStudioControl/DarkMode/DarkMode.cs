@@ -3,6 +3,7 @@
 namespace VisualStudioControl;
 public static class DarkMode
 {
+    //System Funcs
     [DllImport("uxtheme.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
     private static extern int SetWindowTheme(IntPtr hwnd, string pszSubAppName, string? pszSubIdList);
 
@@ -17,7 +18,28 @@ public static class DarkMode
         return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
     }
 
-    public static bool UseImmersiveDarkMode(Form form, bool enabled = true, Func<Control, Color, Color, bool, bool>? newFuncs = null)
+    //My Private Funcs
+    private static bool SetControlBox(Form form, bool enabled)
+    {
+        if (IsWindows10OrGreater(17763))
+        {
+            var attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
+            if (IsWindows10OrGreater(18985))
+            {
+                attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
+            }
+
+            int useImmersiveDarkMode = enabled ? 1 : 0;
+            return DwmSetWindowAttribute(form.Handle, (int)attribute, ref useImmersiveDarkMode, sizeof(int)) == 0;
+        }
+
+        return false;
+    }
+
+    //My Public Funcs
+    public static event EventHandler<DarkModeLoopArgs>? DarkModeLoop;
+    public static event EventHandler<DarkModeStartArgs>? DarkModeStart;
+    public static bool UseImmersiveDarkMode(Form form, bool enabled = true)
     {
         Color main, other;
         if (enabled)
@@ -30,6 +52,8 @@ public static class DarkMode
             main = Color.WhiteSmoke;
             other = Color.Black;
         }
+
+        DarkModeStart?.Invoke(null , new DarkModeStartArgs (main, other, enabled));
 
         #region control
         foreach (Control c in form.Controls)
@@ -68,12 +92,14 @@ public static class DarkMode
                 }
                 else
                 {
-                    mode.WhiteMode();
+                    mode.LightMode();
                 }
             }
-            else if (newFuncs != null)
+            else if (DarkModeLoop != null)
             {
-                if (newFuncs.Invoke(myControl, main, other, enabled))
+                DarkModeLoopArgs args = new DarkModeLoopArgs(myControl, main, other, enabled);
+                DarkModeLoop?.Invoke(null, args);
+                if(args.Stop == true)
                 {
                     return;
                 }
@@ -106,20 +132,6 @@ public static class DarkMode
 
         #endregion
 
-        #region controlBox
-        if (IsWindows10OrGreater(17763))
-        {
-            var attribute = DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1;
-            if (IsWindows10OrGreater(18985))
-            {
-                attribute = DWMWA_USE_IMMERSIVE_DARK_MODE;
-            }
-
-            int useImmersiveDarkMode = enabled ? 1 : 0;
-            return DwmSetWindowAttribute(form.Handle, (int)attribute, ref useImmersiveDarkMode, sizeof(int)) == 0;
-        }
-        #endregion
-
-        return false;
+        return SetControlBox(form, enabled);
     }
 }

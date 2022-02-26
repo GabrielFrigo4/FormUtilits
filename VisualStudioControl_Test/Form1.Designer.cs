@@ -111,50 +111,50 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(88)))), ((int)(((byte)(124)))));
-            this.tabPage2.Location = new System.Drawing.Point(4, 32);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(792, 414);
+            this.tabPage2.Size = new System.Drawing.Size(192, 67);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(88)))), ((int)(((byte)(124)))));
-            this.tabPage3.Location = new System.Drawing.Point(4, 32);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(792, 414);
+            this.tabPage3.Size = new System.Drawing.Size(192, 67);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(88)))), ((int)(((byte)(124)))));
-            this.tabPage4.Location = new System.Drawing.Point(4, 32);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(792, 414);
+            this.tabPage4.Size = new System.Drawing.Size(192, 67);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "tabPage4";
             // 
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(88)))), ((int)(((byte)(124)))));
-            this.tabPage5.Location = new System.Drawing.Point(4, 32);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(792, 414);
+            this.tabPage5.Size = new System.Drawing.Size(192, 67);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "tabPage5";
             // 
             // tabPage6
             // 
             this.tabPage6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(88)))), ((int)(((byte)(124)))));
-            this.tabPage6.Location = new System.Drawing.Point(4, 32);
+            this.tabPage6.Location = new System.Drawing.Point(4, 29);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(792, 414);
+            this.tabPage6.Size = new System.Drawing.Size(192, 67);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "UNGABUGA";
             // 

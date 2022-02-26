@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace VisualStudioControl;
 public interface IDarkMode
 {
-    void WhiteMode();
+    void LightMode();
     void DarkMode();
 }
