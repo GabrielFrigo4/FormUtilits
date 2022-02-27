@@ -77,7 +77,7 @@ public class DarkMode
             other = Color.Black;
         }
 
-        DarkModeStart?.Invoke(this , new DarkModeStartArgs (main, other, enabled));
+        DarkModeStart?.Invoke(this , new DarkModeStartArgs (form, main, other, enabled));
 
         foreach (Control c in form.Controls)
         {
