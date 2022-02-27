@@ -385,7 +385,7 @@ public class VisualStudioTabControl : TabControl
     {
         predraggedTab = GetPointedTab();
         var p = e.Location;
-        if (ShowClosingButton && predraggedTab != null)
+        if (predraggedTab != null)
         {
             var r = GetRectangleTab(predraggedTab);
             r.Offset(r.Width - 19, r.Height / 2 - 9);
@@ -403,7 +403,7 @@ public class VisualStudioTabControl : TabControl
                 mySelectedTabSet = true;
             }
 
-            if (this.ShowClosingMessage)
+            if (this.ShowClosingMessage && showClosingButton)
             {
                 if (DialogResult.Yes == MessageBox.Show(this.ClosingMessage, "Close", MessageBoxButtons.YesNo))
                 {
@@ -417,7 +417,7 @@ public class VisualStudioTabControl : TabControl
                     }
                 }
             }
-            else
+            else if(showClosingButton)
             {
                 if (this.TabPages.Contains(predraggedTab) && this.TabCount > 1)
                 {
@@ -554,7 +554,7 @@ public class VisualStudioTabControl : TabControl
                 Drawer.DrawLine(new Pen(this.horizLineColor, 4.5f), new Point(Header.X, Header.Y), new Point(Header.X + Header.Width, Header.Y));
 
                 // Draws the closing button
-                if (this.ShowClosingButton)
+                if (this.showClosingButton)
                 {
                     var ButtonRect = this.GetTabRect(i);
                     ButtonRect.Offset(ButtonRect.Width - 19, Header.Height / 2 - 9);
@@ -570,6 +570,10 @@ public class VisualStudioTabControl : TabControl
                         DrawButton(this.activeColor, ButtonRect, Header, Drawer);
                     }
                 }
+                else
+                {
+                    predraggedTab = GetPointedTab();
+                }
             }
             else if (TabPages[i] == GetPointedTab())
             {
@@ -577,7 +581,7 @@ public class VisualStudioTabControl : TabControl
                 DrawTabPage(this.activeColor, Header, TabPages[i], Drawer);
 
                 // Draws the closing button
-                if (this.ShowClosingButton)
+                if (this.showClosingButton)
                 {
                     var ButtonRect = this.GetTabRect(i);
                     ButtonRect.Offset(ButtonRect.Width - 19, Header.Height / 2 - 9);
@@ -592,6 +596,10 @@ public class VisualStudioTabControl : TabControl
                     {
                         DrawButton(this.activeColor, ButtonRect, Header, Drawer);
                     }
+                }
+                else
+                {
+                    predraggedTab = GetPointedTab();
                 }
             }
             else
