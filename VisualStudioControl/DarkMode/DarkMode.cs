@@ -36,6 +36,21 @@ public static class DarkMode
         return false;
     }
 
+    private static void SetMainForm(Form form, Color main, Color other, bool enabled)
+    {
+        form.BackColor = main;
+        form.ForeColor = other;
+
+        if (enabled)
+        {
+            SetWindowTheme(form.Handle, "DarkMode_Explorer", null);
+        }
+        else
+        {
+            SetWindowTheme(form.Handle, "Explorer", null);
+        }
+    }
+
     //My Public Funcs
     public static event EventHandler<DarkModeLoopArgs>? DarkModeLoop;
     public static event EventHandler<DarkModeStartArgs>? DarkModeStart;
@@ -55,7 +70,6 @@ public static class DarkMode
 
         DarkModeStart?.Invoke(null , new DarkModeStartArgs (main, other, enabled));
 
-        #region control
         foreach (Control c in form.Controls)
         {
             UpdateColorControls(c);
@@ -115,23 +129,8 @@ public static class DarkMode
                 UpdateColorControls(subC);
             }
         }
-        #endregion
 
-        #region form
-        form.BackColor = main;
-        form.ForeColor = other;
-
-        if (enabled)
-        {
-            SetWindowTheme(form.Handle, "DarkMode_Explorer", null);
-        }
-        else
-        {
-            SetWindowTheme(form.Handle, "Explorer", null);
-        }
-
-        #endregion
-
+        SetMainForm(form, main, other, enabled);
         return SetControlBox(form, enabled);
     }
 }

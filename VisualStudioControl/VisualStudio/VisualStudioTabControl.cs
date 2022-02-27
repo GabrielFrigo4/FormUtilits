@@ -396,22 +396,42 @@ public class VisualStudioTabControl : TabControl
                 return;
             }
 
-            if (mySelectedTab != null && mySelectedTab != predraggedTab && !mySelectedTab.IsDisposed && !mySelectedTab.Disposing && TabCount > 1)
+            bool mySelectedTabSet = false;
+            if (mySelectedTab != predraggedTab && TabCount > 1)
             {
-                SelectedTab = mySelectedTab;
-                SelectedTab.Select();
+                mySelectedTabSet = true;
             }
 
             if (this.ShowClosingMessage)
             {
                 if (DialogResult.Yes == MessageBox.Show(this.ClosingMessage, "Close", MessageBoxButtons.YesNo))
                 {
-                    this.TabPages.Remove(predraggedTab);
+                    if (this.TabPages.Contains(predraggedTab) && this.TabCount > 1)
+                    {
+                        this.TabPages.Remove(predraggedTab);
+                    }
+                    else if (TabCount == 1)
+                    {
+                        this.TabPages.Clear();
+                    }
                 }
             }
             else
             {
-                this.TabPages.Remove(predraggedTab);
+                if (this.TabPages.Contains(predraggedTab) && this.TabCount > 1)
+                {
+                    this.TabPages.Remove(predraggedTab);
+                }
+                else if (TabCount == 1)
+                {
+                    this.TabPages.Clear();
+                }
+            }
+
+            if (mySelectedTab != null && mySelectedTabSet)
+            {
+                SelectedTab = mySelectedTab;
+                SelectedTab.Select();
             }
         }
 
