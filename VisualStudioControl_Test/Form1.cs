@@ -13,6 +13,7 @@ namespace VisualStudioControl_Test
 {
     public partial class Form1 : Form
     {
+        DarkMode darkMode = new DarkMode();
         public Form1()
         {
             InitializeComponent();
@@ -20,12 +21,12 @@ namespace VisualStudioControl_Test
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DarkMode.UseImmersiveDarkMode(this, true);
+            darkMode.UseImmersiveDarkMode(this, true);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DarkMode.UseImmersiveDarkMode(this, false);
+            darkMode.UseImmersiveDarkMode(this, false);
         }
     }
 }

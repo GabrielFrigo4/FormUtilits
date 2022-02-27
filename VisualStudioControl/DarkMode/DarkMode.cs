@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
 namespace VisualStudioControl;
-public static class DarkMode
+public class DarkMode
 {
-    //System Funcs
+#region System Funcs
     [DllImport("uxtheme.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
     private static extern int SetWindowTheme(IntPtr hwnd, string pszSubAppName, string? pszSubIdList);
 
@@ -13,13 +13,14 @@ public static class DarkMode
     private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
     private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 
-    private static bool IsWindows10OrGreater(int build = -1)
+    private bool IsWindows10OrGreater(int build = -1)
     {
         return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
     }
+#endregion
 
-    //My Private Funcs
-    private static bool SetControlBox(Form form, bool enabled)
+#region My Private Funcs
+    private bool SetControlBox(Form form, bool enabled)
     {
         if (IsWindows10OrGreater(17763))
         {
@@ -36,7 +37,7 @@ public static class DarkMode
         return false;
     }
 
-    private static void SetMainForm(Form form, Color main, Color other, bool enabled)
+    private void SetMainForm(Form form, Color main, Color other, bool enabled)
     {
         form.BackColor = main;
         form.ForeColor = other;
@@ -50,11 +51,19 @@ public static class DarkMode
             SetWindowTheme(form.Handle, "Explorer", null);
         }
     }
+#endregion
 
-    //My Public Funcs
-    public static event EventHandler<DarkModeLoopArgs>? DarkModeLoop;
-    public static event EventHandler<DarkModeStartArgs>? DarkModeStart;
-    public static bool UseImmersiveDarkMode(Form form, bool enabled = true)
+#region My Public Funcs
+    public DarkMode()
+    {
+        DarkModeLoop += SetTheme_Label;
+        DarkModeLoop += SetTheme_IDarkMode;
+        DarkModeLoop += SetTheme_VisualStudioTabControl;
+    }
+
+    public event EventHandler<DarkModeLoopArgs>? DarkModeLoop;
+    public event EventHandler<DarkModeStartArgs>? DarkModeStart;
+    public bool UseImmersiveDarkMode(Form form, bool enabled = true)
     {
         Color main, other;
         if (enabled)
@@ -68,7 +77,7 @@ public static class DarkMode
             other = Color.Black;
         }
 
-        DarkModeStart?.Invoke(null , new DarkModeStartArgs (main, other, enabled));
+        DarkModeStart?.Invoke(this , new DarkModeStartArgs (main, other, enabled));
 
         foreach (Control c in form.Controls)
         {
@@ -86,42 +95,16 @@ public static class DarkMode
                 SetWindowTheme(myControl.Handle, "Explorer", null);
             }
 
-            if (myControl is VisualStudioTabControl)
-            {
-                if (enabled)
-                {
-                    ((VisualStudioTabControl)myControl).Theme = VisualStudioTabControlTheme.Dark;
-                }
-                else
-                {
-                    ((VisualStudioTabControl)myControl).Theme = VisualStudioTabControlTheme.Light;
-                }
-            }
-            else if (myControl is IDarkMode)
-            {
-                IDarkMode mode = (IDarkMode)myControl;
-                if (enabled)
-                {
-                    mode.DarkMode();
-                }
-                else
-                {
-                    mode.LightMode();
-                }
-            }
-            else if (DarkModeLoop != null)
-            {
-                DarkModeLoopArgs args = new DarkModeLoopArgs(myControl, main, other, enabled);
-                DarkModeLoop?.Invoke(null, args);
-                if(args.Stop == true)
-                {
-                    return;
-                }
-            }
-            else
+            DarkModeLoopArgs args = new DarkModeLoopArgs(myControl, main, other, enabled);
+            DarkModeLoop?.Invoke(this, args);
+            if (args.SetTheme == false)
             {
                 myControl.BackColor = main;
                 myControl.ForeColor = other;
+            }
+            if (args.Stop == true)
+            {
+                return;
             }
 
             foreach (Control subC in myControl.Controls)
@@ -133,4 +116,50 @@ public static class DarkMode
         SetMainForm(form, main, other, enabled);
         return SetControlBox(form, enabled);
     }
+#endregion
+
+#region MyControlFuncs
+    void SetTheme_Label(object? sender, DarkModeLoopArgs e)
+    {
+        if(e.MyControl is Label)
+        {
+            e.MyControl.BackColor = Color.Transparent;
+            e.MyControl.ForeColor = e.Other;
+            e.SetTheme = true;
+        }
+    }
+
+    void SetTheme_IDarkMode(object? sender, DarkModeLoopArgs e)
+    {
+        if (e.MyControl is IDarkMode)
+        {
+            IDarkMode mode = (IDarkMode)e.MyControl;
+            if (e.Enabled)
+            {
+                mode.DarkMode();
+            }
+            else
+            {
+                mode.LightMode();
+            }
+            e.SetTheme = true;
+        }
+    }
+
+    void SetTheme_VisualStudioTabControl(object? sender, DarkModeLoopArgs e)
+    {
+        if (e.MyControl is VisualStudioTabControl)
+        {
+            if (e.Enabled)
+            {
+                ((VisualStudioTabControl)e.MyControl).Theme = VisualStudioTabControlTheme.Dark;
+            }
+            else
+            {
+                ((VisualStudioTabControl)e.MyControl).Theme = VisualStudioTabControlTheme.Light;
+            }
+            e.SetTheme = true;
+        }
+    }
+#endregion
 }
