@@ -372,6 +372,7 @@ public class VisualStudioTabControl : TabControl
             }
         }
 
+        this.Refresh();
         base.OnDragOver(drgevent);
     }
 
@@ -436,6 +437,7 @@ public class VisualStudioTabControl : TabControl
         }
 
         base.OnMouseDown(e);
+        this.Refresh();
     }
 
     /// <summary>
@@ -449,9 +451,8 @@ public class VisualStudioTabControl : TabControl
             this.DoDragDrop(predraggedTab, DragDropEffects.Move);
         }
 
-        Refresh();
-
         base.OnMouseMove(e);
+        this.Refresh();
     }
 
     /// <summary>
@@ -460,8 +461,8 @@ public class VisualStudioTabControl : TabControl
     /// <param name="e"></param>
     protected override void OnMouseLeave(EventArgs e)
     {
-        Refresh();
         base.OnMouseLeave(e);
+        this.Refresh();
     }
 
     /// <summary>
