@@ -35,9 +35,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.ungaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bungaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visualStudioTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // visualStudioTabControl1
@@ -57,13 +61,13 @@
             this.visualStudioTabControl1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.visualStudioTabControl1.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(78)))), ((int)(((byte)(114)))));
             this.visualStudioTabControl1.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(204)))), ((int)(((byte)(132)))));
-            this.visualStudioTabControl1.Location = new System.Drawing.Point(0, 0);
+            this.visualStudioTabControl1.Location = new System.Drawing.Point(0, 28);
             this.visualStudioTabControl1.Name = "visualStudioTabControl1";
             this.visualStudioTabControl1.SelectedIndex = 0;
             this.visualStudioTabControl1.SelectedTextColor = System.Drawing.Color.Black;
             this.visualStudioTabControl1.ShowClosingButton = false;
             this.visualStudioTabControl1.ShowClosingMessage = false;
-            this.visualStudioTabControl1.Size = new System.Drawing.Size(800, 450);
+            this.visualStudioTabControl1.Size = new System.Drawing.Size(800, 422);
             this.visualStudioTabControl1.TabIndex = 0;
             this.visualStudioTabControl1.TextColor = System.Drawing.Color.White;
             this.visualStudioTabControl1.Theme = VisualStudioControl.VisualStudioTabControlTheme.Blue;
@@ -78,7 +82,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 32);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(792, 414);
+            this.tabPage1.Size = new System.Drawing.Size(792, 386);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Fragment";
             // 
@@ -133,12 +137,39 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "label6";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ungaToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // ungaToolStripMenuItem
+            // 
+            this.ungaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bungaToolStripMenuItem});
+            this.ungaToolStripMenuItem.Name = "ungaToolStripMenuItem";
+            this.ungaToolStripMenuItem.Size = new System.Drawing.Size(56, 24);
+            this.ungaToolStripMenuItem.Text = "unga";
+            // 
+            // bungaToolStripMenuItem
+            // 
+            this.bungaToolStripMenuItem.Name = "bungaToolStripMenuItem";
+            this.bungaToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.bungaToolStripMenuItem.Text = "bunga";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.visualStudioTabControl1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.visualStudioTabControl1.ResumeLayout(false);
@@ -146,7 +177,10 @@
             this.tabPage1.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -159,5 +193,8 @@
         private TabPage tabPage6;
         private Label label1;
         private Label label6;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem ungaToolStripMenuItem;
+        private ToolStripMenuItem bungaToolStripMenuItem;
     }
 }
