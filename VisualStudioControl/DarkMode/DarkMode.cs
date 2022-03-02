@@ -54,9 +54,12 @@ public class DarkMode
 #endregion
 
 #region My Public Funcs
+    public static bool IsDark { get; set; }
+
     public DarkMode()
     {
         DarkModeLoop += SetTheme_Label;
+        DarkModeLoop += SetTheme_MenuStrip;
         DarkModeLoop += SetTheme_IDarkMode;
         DarkModeLoop += SetTheme_VisualStudioTabControl;
     }
@@ -65,6 +68,7 @@ public class DarkMode
     public event EventHandler<DarkModeStartArgs>? DarkModeStart;
     public bool UseImmersiveDarkMode(Form form, bool enabled = true)
     {
+        IsDark = enabled;
         Color main, other;
         if (enabled)
         {
@@ -125,6 +129,34 @@ public class DarkMode
         {
             e.MyControl.BackColor = Color.Transparent;
             e.MyControl.ForeColor = e.Other;
+            e.SetTheme = true;
+        }
+    }
+
+    void SetTheme_MenuStrip(object? sender, DarkModeLoopArgs e)
+    {
+        void SetForeColorItem(ref ToolStripMenuItem item)
+        {
+            item.ForeColor = e.Other;
+            item.BackColor = e.Main;
+            foreach (ToolStripMenuItem subItem in item.DropDownItems)
+            {
+                ToolStripMenuItem thisSubItem = subItem;
+                SetForeColorItem(ref thisSubItem);
+            }
+        }
+
+        if (e.MyControl is MenuStrip)
+        {
+            MenuStrip menuStrip = (MenuStrip)e.MyControl;
+            e.MyControl.BackColor = e.Main;
+            e.MyControl.ForeColor = e.Other;
+            menuStrip.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(e.Enabled));
+            foreach(ToolStripMenuItem item in menuStrip.Items)
+            {
+                ToolStripMenuItem thisItem = item;
+                SetForeColorItem(ref thisItem);
+            }
             e.SetTheme = true;
         }
     }

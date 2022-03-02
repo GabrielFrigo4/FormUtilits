@@ -28,5 +28,10 @@ namespace VisualStudioControl_Test
         {
             darkMode.UseImmersiveDarkMode(this, false);
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(DarkMode.IsDark));
+        }
     }
 }

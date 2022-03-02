@@ -38,6 +38,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ungaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bungaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ugaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ugaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ugaToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.visualStudioTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -139,11 +142,14 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ungaToolStripMenuItem});
+            this.ungaToolStripMenuItem,
+            this.ugaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.menuStrip1.Size = new System.Drawing.Size(800, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
@@ -162,6 +168,27 @@
             this.bungaToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
             this.bungaToolStripMenuItem.Text = "bunga";
             // 
+            // ugaToolStripMenuItem
+            // 
+            this.ugaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ugaToolStripMenuItem1,
+            this.ugaToolStripMenuItem2});
+            this.ugaToolStripMenuItem.Name = "ugaToolStripMenuItem";
+            this.ugaToolStripMenuItem.Size = new System.Drawing.Size(48, 24);
+            this.ugaToolStripMenuItem.Text = "uga";
+            // 
+            // ugaToolStripMenuItem1
+            // 
+            this.ugaToolStripMenuItem1.Name = "ugaToolStripMenuItem1";
+            this.ugaToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.ugaToolStripMenuItem1.Text = "uga";
+            // 
+            // ugaToolStripMenuItem2
+            // 
+            this.ugaToolStripMenuItem2.Name = "ugaToolStripMenuItem2";
+            this.ugaToolStripMenuItem2.Size = new System.Drawing.Size(224, 26);
+            this.ugaToolStripMenuItem2.Text = "uga";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -172,6 +199,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.visualStudioTabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -196,5 +224,8 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem ungaToolStripMenuItem;
         private ToolStripMenuItem bungaToolStripMenuItem;
+        private ToolStripMenuItem ugaToolStripMenuItem;
+        private ToolStripMenuItem ugaToolStripMenuItem1;
+        private ToolStripMenuItem ugaToolStripMenuItem2;
     }
 }
