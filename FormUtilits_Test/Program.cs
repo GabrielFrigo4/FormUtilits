@@ -1,4 +1,4 @@
-namespace VisualStudioControl_Test
+namespace FormUtilits_Test
 {
     internal static class Program
     {

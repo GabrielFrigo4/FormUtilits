@@ -1,12 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Security.Permissions;
-using System.Windows.Forms;
 
-namespace VisualStudioControl;
+namespace FormUtilits.VisualStudioControl;
 public class VisualStudioTabControl : TabControl
 {
     /// <summary>

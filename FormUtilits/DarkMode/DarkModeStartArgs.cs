@@ -1,4 +1,4 @@
-﻿namespace VisualStudioControl;
+﻿namespace FormUtilits.DarkMode;
 public class DarkModeStartArgs : EventArgs
 {
     public Form Form { get; private set; }

@@ -1,4 +1,4 @@
-﻿namespace VisualStudioControl;
+﻿namespace FormUtilits.VisualStudioControl;
 
 public class VisualStudioColorTable : ProfessionalColorTable
 {

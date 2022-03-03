@@ -1,4 +1,4 @@
-﻿namespace VisualStudioControl_Test
+﻿namespace FormUtilits_Test
 {
     partial class Form1
     {

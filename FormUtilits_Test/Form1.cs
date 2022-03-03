@@ -7,26 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VisualStudioControl;
+using FormUtilits.VisualStudioControl;
+using FormUtilits.DarkMode;
 
-namespace VisualStudioControl_Test
+namespace FormUtilits_Test
 {
     public partial class Form1 : Form
     {
-        DarkMode darkMode = new DarkMode();
+        DarkMode darkMode;
         public Form1()
         {
+            darkMode = new DarkMode(this);
             InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            darkMode.UseImmersiveDarkMode(this, true);
+            darkMode.SetDarkMode(true);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            darkMode.UseImmersiveDarkMode(this, false);
+            darkMode.SetDarkMode(false);
         }
 
         private void Form1_Load(object sender, EventArgs e)
