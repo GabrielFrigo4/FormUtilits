@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using FormUtilits.VisualStudioControl;
+﻿using FormUtilits.VisualStudioControl;
 using FormUtilits.DarkMode;
 
 namespace FormUtilits_Test
@@ -33,7 +24,7 @@ namespace FormUtilits_Test
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            menuStrip1.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(DarkMode.IsDark));
+            //menuStrip1.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(DarkMode.IsDark));
         }
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.visualStudioTabControl1 = new VisualStudioControl.VisualStudioTabControl();
+            this.visualStudioTabControl1 = new FormUtilits.VisualStudioControl.VisualStudioTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
@@ -73,7 +73,7 @@
             this.visualStudioTabControl1.Size = new System.Drawing.Size(800, 422);
             this.visualStudioTabControl1.TabIndex = 0;
             this.visualStudioTabControl1.TextColor = System.Drawing.Color.White;
-            this.visualStudioTabControl1.Theme = VisualStudioControl.VisualStudioTabControlTheme.Blue;
+            this.visualStudioTabControl1.Theme = FormUtilits.VisualStudioControl.VisualStudioTabControlTheme.Blue;
             // 
             // tabPage1
             // 
@@ -214,7 +214,7 @@
 
         #endregion
 
-        private VisualStudioControl.VisualStudioTabControl visualStudioTabControl1;
+        private FormUtilits.VisualStudioControl.VisualStudioTabControl visualStudioTabControl1;
         private TabPage tabPage1;
         private Button button1;
         private Button button2;
