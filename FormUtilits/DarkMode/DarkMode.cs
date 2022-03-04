@@ -58,6 +58,7 @@ public class DarkMode
     #region My Public Funcs
     public Form MainForm { get; private set; }
     public static bool IsDark { get; private set; }
+    public static bool IsInit { get; private set; }
 
     public DarkMode(Form mainForm)
     {
@@ -71,6 +72,12 @@ public class DarkMode
     public event EventHandler<DarkModeLoopArgs>? DarkModeLoop;
     public event EventHandler<DarkModeStartArgs>? DarkModeStart;
 
+    public void Init(bool dark = true)
+    {
+        SetDarkMode(dark);
+        IsInit = true;
+    }
+
     public bool SetDarkMode(bool enabled = true)
     {
         return SetDarkModeForm(MainForm, enabled);
@@ -78,7 +85,10 @@ public class DarkMode
 
     public bool SetDarkModeForm(Form form, bool enabled = true)
     {
-        IsDark = enabled;
+        if (form == MainForm)
+        {
+            IsDark = enabled;
+        }
         Color main, other;
         if (enabled)
         {
@@ -148,7 +158,6 @@ public class DarkMode
         void SetForeColorItem(ref ToolStripMenuItem item)
         {
             item.ForeColor = e.Other;
-            item.BackColor = e.Main;
             foreach (ToolStripMenuItem subItem in item.DropDownItems)
             {
                 ToolStripMenuItem thisSubItem = subItem;

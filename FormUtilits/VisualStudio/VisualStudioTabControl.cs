@@ -55,7 +55,7 @@ public class VisualStudioTabControl : TabControl
                     BackTabColor = Color.FromArgb(64, 88, 124);
                     break;
                 case VisualStudioTabControlTheme.Dark:
-                    HeaderColor = Color.FromArgb(45, 45, 48);
+                    HeaderColor = Color.FromArgb(32, 32, 32);
                     ActiveColor = Color.FromArgb(78, 78, 84);
                     DesactiveColor = Color.FromArgb(54, 54, 58);
                     HorizontalLineColor = Color.LightBlue;

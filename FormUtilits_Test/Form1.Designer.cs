@@ -61,7 +61,7 @@
             this.visualStudioTabControl1.DesactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(90)))), ((int)(((byte)(130)))));
             this.visualStudioTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.visualStudioTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.visualStudioTabControl1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.visualStudioTabControl1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.visualStudioTabControl1.HeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(78)))), ((int)(((byte)(114)))));
             this.visualStudioTabControl1.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(204)))), ((int)(((byte)(132)))));
             this.visualStudioTabControl1.Location = new System.Drawing.Point(0, 28);
@@ -82,10 +82,10 @@
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tabPage1.Location = new System.Drawing.Point(4, 32);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(792, 386);
+            this.tabPage1.Size = new System.Drawing.Size(792, 389);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Fragment";
             // 
@@ -180,13 +180,13 @@
             // ugaToolStripMenuItem1
             // 
             this.ugaToolStripMenuItem1.Name = "ugaToolStripMenuItem1";
-            this.ugaToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.ugaToolStripMenuItem1.Size = new System.Drawing.Size(117, 26);
             this.ugaToolStripMenuItem1.Text = "uga";
             // 
             // ugaToolStripMenuItem2
             // 
             this.ugaToolStripMenuItem2.Name = "ugaToolStripMenuItem2";
-            this.ugaToolStripMenuItem2.Size = new System.Drawing.Size(224, 26);
+            this.ugaToolStripMenuItem2.Size = new System.Drawing.Size(117, 26);
             this.ugaToolStripMenuItem2.Text = "uga";
             // 
             // Form1
@@ -199,7 +199,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.visualStudioTabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
