@@ -1,24 +1,23 @@
-﻿using FormUtilits.VisualStudioControl;
-using FormUtilits.DarkMode;
+﻿using FormUtilits.Themes;
 
 namespace FormUtilits_Test;
 public partial class Form1 : Form
 {
-    DarkMode darkMode;
+    internal FormTheme FormTheme { get; private set; }
     public Form1()
     {
-        darkMode = new DarkMode(this);
+        FormTheme = new FormTheme(this);
         InitializeComponent();
-        darkMode.Init();
+        FormTheme.Init();
     }
 
     private void button1_Click(object sender, EventArgs e)
     {
-        darkMode.SetDarkMode(true);
+        FormTheme.SetThemeMode(ThemeMode.Dark);
     }
 
     private void button2_Click(object sender, EventArgs e)
     {
-        darkMode.SetDarkMode(false);
+        FormTheme.SetThemeMode(ThemeMode.Light);
     }
 }
