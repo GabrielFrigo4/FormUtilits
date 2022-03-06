@@ -20,4 +20,9 @@ public partial class Form1 : Form
     {
         FormTheme.SetThemeMode(ThemeMode.Light);
     }
+
+    private void button3_Click(object sender, EventArgs e)
+    {
+        FormTheme.SetThemeMode(ThemeMode.System);
+    }
 }

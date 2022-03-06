@@ -35,11 +35,10 @@ public class FormTheme
             int useImmersiveDarkMode = IsDark ? 1 : 0;
             return DwmSetWindowAttribute(form.Handle, (int)attribute, ref useImmersiveDarkMode, sizeof(int)) == 0;
         }
-
         return false;
     }
 
-    private void SetMainForm(Form form, Color main, Color other)
+    private void SetFormColor(Form form, Color main, Color other)
     {
         form.BackColor = main;
         form.ForeColor = other;
@@ -67,6 +66,14 @@ public class FormTheme
         else
         {
             return string.Empty;
+        }
+    }
+
+    public void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+    {
+        if(IsSystem == true)
+        {
+            SetThemeMode(ThemeMode.System);
         }
     }
     #endregion
@@ -129,6 +136,7 @@ public class FormTheme
         DarkModeLoop += SetTheme_MenuStrip;
         DarkModeLoop += SetTheme_IDarkMode;
         DarkModeLoop += SetTheme_VisualStudioTabControl;
+        SystemEvents.UserPreferenceChanged += (s, e) => { SystemEvents_UserPreferenceChanged(s, e); };
     }
 
     public event EventHandler<FormThemeLoopArgs>? DarkModeLoop;
@@ -137,42 +145,46 @@ public class FormTheme
     public void Init()
     {
         SetThemeMode(ThemeMode.System);
-        IsLight = false;
-        IsDark = false;
-        IsSystem = true;
         IsInit = true;
     }
 
     public bool SetThemeMode(ThemeMode mode)
     {
-        return SetDarkModeForm(MainForm, mode);
-    }
+        bool isDark = IsDark, isLight = IsLight;
 
-    public bool SetDarkModeForm(Form form, ThemeMode mode)
-    {
-        if (form == MainForm)
+        CurrentMode = mode;
+        if (CurrentMode == ThemeMode.Light)
         {
-            CurrentMode = mode;
-            if(CurrentMode == ThemeMode.Light)
-            {
-                IsLight = true;
-                IsDark = false;
-                IsSystem = false;
-            }
-            else if (CurrentMode == ThemeMode.Dark)
-            {
-                IsLight = false;
-                IsDark = true;
-                IsSystem = false;
-            }
-            else if (CurrentMode == ThemeMode.System)
-            {
-                IsLight = IsSystemModeLight();
-                IsDark = IsSystemModeDark();
-                IsSystem = true;
-            }
+            IsLight = true;
+            IsDark = false;
+            IsSystem = false;
+        }
+        else if (CurrentMode == ThemeMode.Dark)
+        {
+            IsLight = false;
+            IsDark = true;
+            IsSystem = false;
+        }
+        else if (CurrentMode == ThemeMode.System)
+        {
+            IsLight = IsSystemModeLight();
+            IsDark = IsSystemModeDark();
+            IsSystem = true;
         }
 
+        if(isDark != IsDark || isLight != IsLight)
+        {
+            SetThemeModeForm(MainForm, mode, true);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void SetThemeModeForm(Form form, ThemeMode mode, bool setControlBox = true)
+    {
         Color main, other;
         if (IsDark)
         {
@@ -221,8 +233,11 @@ public class FormTheme
             }
         }
 
-        SetMainForm(form, main, other);
-        return SetControlBox(form);
+        SetFormColor(form, main, other);
+        if (setControlBox)
+        {
+            SetControlBox(form);
+        }
     }
     #endregion
 
