@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FormUtilits.Themes;
-public enum ThemeMode
+public enum FormThemeMode
 {
     Light,
     Dark,

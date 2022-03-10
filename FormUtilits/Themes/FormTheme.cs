@@ -73,7 +73,7 @@ public class FormTheme
     {
         if(IsSystem == true)
         {
-            SetThemeMode(ThemeMode.System);
+            SetThemeMode(FormThemeMode.System);
         }
     }
     #endregion
@@ -83,7 +83,7 @@ public class FormTheme
     public static bool IsLight { get; private set; }
     public static bool IsDark { get; private set; }
     public static bool IsSystem { get; private set; }
-    public static ThemeMode CurrentMode { get; private set; }
+    public static FormThemeMode CurrentMode { get; private set; }
     public static bool IsInit { get; private set; }
 
     public readonly string[] DarkThemes = { "dark", "themeA", "themeB" };
@@ -144,28 +144,28 @@ public class FormTheme
 
     public void Init()
     {
-        SetThemeMode(ThemeMode.System);
+        SetThemeMode(FormThemeMode.System);
         IsInit = true;
     }
 
-    public bool SetThemeMode(ThemeMode mode)
+    public bool SetThemeMode(FormThemeMode mode)
     {
         bool isDark = IsDark, isLight = IsLight;
 
         CurrentMode = mode;
-        if (CurrentMode == ThemeMode.Light)
+        if (CurrentMode == FormThemeMode.Light)
         {
             IsLight = true;
             IsDark = false;
             IsSystem = false;
         }
-        else if (CurrentMode == ThemeMode.Dark)
+        else if (CurrentMode == FormThemeMode.Dark)
         {
             IsLight = false;
             IsDark = true;
             IsSystem = false;
         }
-        else if (CurrentMode == ThemeMode.System)
+        else if (CurrentMode == FormThemeMode.System)
         {
             IsLight = IsSystemModeLight();
             IsDark = IsSystemModeDark();
@@ -183,7 +183,7 @@ public class FormTheme
         }
     }
 
-    public void SetThemeModeForm(Form form, ThemeMode mode, bool setControlBox = true)
+    public void SetThemeModeForm(Form form, FormThemeMode mode, bool setControlBox = true)
     {
         Color main, other;
         if (IsDark)
@@ -259,9 +259,8 @@ public class FormTheme
             item.ForeColor = e.Other;
             foreach (object subItem in item.DropDownItems)
             {
-                if(subItem is ToolStripMenuItem)
+                if (subItem is ToolStripMenuItem thisSubItem)
                 {
-                    ToolStripMenuItem thisSubItem = (ToolStripMenuItem)subItem;
                     SetForeColorItem(ref thisSubItem);
                 }
             }
@@ -292,9 +291,8 @@ public class FormTheme
 
     void SetTheme_IDarkMode(object? sender, FormThemeLoopArgs e)
     {
-        if (e.MyControl is IFormTheme)
+        if (e.MyControl is IFormTheme mode)
         {
-            IFormTheme mode = (IFormTheme)e.MyControl;
             mode.SetMode(sender, e);
             e.SetTheme = true;
         }
@@ -302,15 +300,15 @@ public class FormTheme
 
     void SetTheme_VisualStudioTabControl(object? sender, FormThemeLoopArgs e)
     {
-        if (e.MyControl is VisualStudioTabControl)
+        if (e.MyControl is VisualStudioTabControl control)
         {
             if (e.IsDark)
             {
-                ((VisualStudioTabControl)e.MyControl).Theme = VisualStudioTabControlTheme.Dark;
+                control.Theme = VisualStudioTabControlTheme.Dark;
             }
             else
             {
-                ((VisualStudioTabControl)e.MyControl).Theme = VisualStudioTabControlTheme.Light;
+                control.Theme = VisualStudioTabControlTheme.Light;
             }
             e.SetTheme = true;
         }

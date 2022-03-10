@@ -255,4 +255,196 @@ public class VisualStudioColorTable : ProfessionalColorTable
         }
     }
     #endregion
+
+    #region Button
+    public override Color ButtonCheckedGradientBegin
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonCheckedGradientBegin;
+        }
+    }
+
+    public override Color ButtonCheckedGradientEnd
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonCheckedGradientEnd;
+        }
+    }
+
+    public override Color ButtonCheckedGradientMiddle
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonCheckedGradientMiddle;
+        }
+    }
+
+    public override Color ButtonCheckedHighlight
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonCheckedHighlight;
+        }
+    }
+
+    public override Color ButtonCheckedHighlightBorder
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonCheckedHighlightBorder;
+        }
+    }
+
+    public override Color ButtonPressedBorder
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonPressedBorder;
+        }
+    }
+
+    public override Color ButtonPressedGradientBegin
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonPressedGradientBegin;
+        }
+    }
+
+    public override Color ButtonPressedGradientEnd
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonPressedGradientEnd;
+        }
+    }
+
+    public override Color ButtonPressedGradientMiddle
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonPressedGradientMiddle;
+        }
+    }
+
+    public override Color ButtonPressedHighlight
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonPressedHighlight;
+        }
+    }
+
+    public override Color ButtonPressedHighlightBorder
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonPressedHighlightBorder;
+        }
+    }
+
+    public override Color ButtonSelectedBorder
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonSelectedBorder;
+        }
+    }
+
+    public override Color ButtonSelectedGradientBegin
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonSelectedGradientBegin;
+        }
+    }
+
+    public override Color ButtonSelectedGradientEnd
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonSelectedGradientEnd;
+        }
+    }
+
+    public override Color ButtonSelectedGradientMiddle
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonSelectedGradientMiddle;
+        }
+    }
+
+    public override Color ButtonSelectedHighlight
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonSelectedHighlight;
+        }
+    }
+
+    public override Color ButtonSelectedHighlightBorder
+    {
+        get
+        {
+            if (isDark)
+                return Color.FromArgb(23, 23, 23);
+            else
+                return base.ButtonSelectedHighlightBorder;
+        }
+    }
+    #endregion Button
+
+    #region Backgound
+    #endregion
 }

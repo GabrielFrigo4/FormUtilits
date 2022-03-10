@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FormUtilits.VisualStudioControl;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace FormUtilits_Test
         public Form2()
         {
             InitializeComponent();
+            statusStrip1.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(true));
         }
     }
 }
