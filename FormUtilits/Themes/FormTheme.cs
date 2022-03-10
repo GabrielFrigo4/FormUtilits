@@ -89,6 +89,9 @@ public class FormTheme
     public readonly string[] DarkThemes = { "dark", "themeA", "themeB" };
     public readonly string[] LightThemes = { "aero", "themeC", "themeD" };
 
+    public event EventHandler<FormThemeLoopArgs>? FormThemeLoop;
+    public event EventHandler<FormThemeStartArgs>? FormThemeStart;
+
     public bool IsSystemModeLight()
     {
         bool isModeLight;
@@ -132,15 +135,12 @@ public class FormTheme
     public FormTheme(Form mainForm)
     {
         MainForm = mainForm;
-        DarkModeLoop += SetTheme_Label;
-        DarkModeLoop += SetTheme_MenuStrip;
-        DarkModeLoop += SetTheme_IDarkMode;
-        DarkModeLoop += SetTheme_VisualStudioTabControl;
+        FormThemeLoop += SetTheme_Label;
+        FormThemeLoop += SetTheme_MenuStrip;
+        FormThemeLoop += SetTheme_IDarkMode;
+        FormThemeLoop += SetTheme_VisualStudioTabControl;
         SystemEvents.UserPreferenceChanged += (s, e) => { SystemEvents_UserPreferenceChanged(s, e); };
     }
-
-    public event EventHandler<FormThemeLoopArgs>? DarkModeLoop;
-    public event EventHandler<FormThemeStartArgs>? DarkModeStart;
 
     public void Init()
     {
@@ -197,7 +197,7 @@ public class FormTheme
             other = Color.Black;
         }
 
-        DarkModeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem));
+        FormThemeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem));
 
         foreach (Control c in form.Controls)
         {
@@ -216,7 +216,7 @@ public class FormTheme
             }
 
             FormThemeLoopArgs args = new FormThemeLoopArgs(myControl, main, other, mode, IsLight, IsDark, IsSystem);
-            DarkModeLoop?.Invoke(this, args);
+            FormThemeLoop?.Invoke(this, args);
             if (args.SetTheme == false)
             {
                 myControl.BackColor = main;
@@ -257,10 +257,13 @@ public class FormTheme
         void SetForeColorItem(ref ToolStripMenuItem item)
         {
             item.ForeColor = e.Other;
-            foreach (ToolStripMenuItem subItem in item.DropDownItems)
+            foreach (object subItem in item.DropDownItems)
             {
-                ToolStripMenuItem thisSubItem = subItem;
-                SetForeColorItem(ref thisSubItem);
+                if(subItem is ToolStripMenuItem)
+                {
+                    ToolStripMenuItem thisSubItem = (ToolStripMenuItem)subItem;
+                    SetForeColorItem(ref thisSubItem);
+                }
             }
         }
 
@@ -270,10 +273,18 @@ public class FormTheme
             e.MyControl.BackColor = e.Main;
             e.MyControl.ForeColor = e.Other;
             menuStrip.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(e.IsDark));
-            foreach(ToolStripMenuItem item in menuStrip.Items)
+            foreach(object item in menuStrip.Items)
             {
-                ToolStripMenuItem thisItem = item;
-                SetForeColorItem(ref thisItem);
+                if (item is ToolStripMenuItem)
+                {
+                    ToolStripMenuItem thisItem = (ToolStripMenuItem)item;
+                    SetForeColorItem(ref thisItem);
+                }
+                else
+                {
+                    ToolStripControlHost thisItem = (ToolStripControlHost)item;
+                    thisItem.ForeColor = e.Other;
+                }
             }
             e.SetTheme = true;
         }

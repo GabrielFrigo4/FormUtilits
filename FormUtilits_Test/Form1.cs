@@ -14,6 +14,9 @@ public partial class Form1 : Form
     private void button1_Click(object sender, EventArgs e)
     {
         FormTheme.SetThemeMode(ThemeMode.Dark);
+        Form2 form2 = new Form2();
+        form2.Show();
+        FormTheme.SetThemeModeForm(form2, ThemeMode.System);
     }
 
     private void button2_Click(object sender, EventArgs e)
