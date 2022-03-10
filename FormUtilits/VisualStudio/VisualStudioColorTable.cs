@@ -447,4 +447,10 @@ public class VisualStudioColorTable : ProfessionalColorTable
 
     #region Backgound
     #endregion
+
+    #region Grip
+    #endregion
+
+    #region Separator
+    #endregion 
 }
