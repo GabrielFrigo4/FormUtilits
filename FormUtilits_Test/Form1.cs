@@ -13,22 +13,22 @@ public partial class Form1 : Form
 
     private async void button1_Click(object sender, EventArgs e)
     {
-        FormTheme.SetThemeModeAynsc(FormThemeMode.Dark);
+        FormTheme.SetThemeModeAsync(FormThemeMode.Dark);
         for(int i = 0; i < 10; i++)
         {
             Form2 form2 = new Form2();
             form2.Show();
-            await Task.Run(() => FormTheme.SetThemeModeFormAynsc(form2, FormThemeMode.System));
+            await Task.Run(() => FormTheme.SetThemeModeFormAsync(form2, FormThemeMode.System));
         }
     }
 
     private void button2_Click(object sender, EventArgs e)
     {
-        FormTheme.SetThemeModeAynsc(FormThemeMode.Light);
+        FormTheme.SetThemeModeAsync(FormThemeMode.Light);
     }
 
     private void button3_Click(object sender, EventArgs e)
     {
-        FormTheme.SetThemeModeAynsc(FormThemeMode.System);
+        FormTheme.SetThemeModeAsync(FormThemeMode.System);
     }
 }

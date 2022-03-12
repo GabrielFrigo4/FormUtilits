@@ -236,8 +236,8 @@ public class FormTheme
     }
     #endregion
 
-    #region My Public Aynsc
-    public void SetThemeModeAynsc(FormThemeMode mode)
+    #region My Public Async
+    public void SetThemeModeAsync(FormThemeMode mode)
     {
         bool isDark = IsDark, isLight = IsLight;
 
@@ -263,11 +263,11 @@ public class FormTheme
 
         if (isDark != IsDark || isLight != IsLight)
         {
-            SetThemeModeFormAynsc(MainForm, mode, true);
+            SetThemeModeFormAsync(MainForm, mode, true);
         }
     }
 
-    public async void SetThemeModeFormAynsc(Form form, FormThemeMode mode, bool setControlBox = true)
+    public async void SetThemeModeFormAsync(Form form, FormThemeMode mode, bool setControlBox = true)
     {
         Color main, other;
         if (IsDark)
@@ -283,7 +283,7 @@ public class FormTheme
 
         await Task.Run(() => FormThemeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem)));
 
-        async void UpdateColorControlsAynsc(Control myControl)
+        async void UpdateColorControlsAsync(Control myControl)
         {
             if (IsDark)
             {
@@ -308,13 +308,13 @@ public class FormTheme
 
             foreach (Control subC in myControl.Controls)
             {
-                await Task.Run(() => UpdateColorControlsAynsc(subC));
+                await Task.Run(() => UpdateColorControlsAsync(subC));
             }
         }
 
         foreach (Control c in form.Controls)
         {
-            await Task.Run(() => UpdateColorControlsAynsc(c));
+            await Task.Run(() => UpdateColorControlsAsync(c));
         }
 
         SetFormColor(form, main, other);
