@@ -40,8 +40,8 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.aaaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.aaaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -136,6 +136,12 @@
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(34, 24);
             this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
             // 
+            // aaaToolStripMenuItem
+            // 
+            this.aaaToolStripMenuItem.Name = "aaaToolStripMenuItem";
+            this.aaaToolStripMenuItem.Size = new System.Drawing.Size(116, 26);
+            this.aaaToolStripMenuItem.Text = "aaa";
+            // 
             // toolStripSplitButton1
             // 
             this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -147,16 +153,10 @@
             this.toolStripSplitButton1.Size = new System.Drawing.Size(39, 24);
             this.toolStripSplitButton1.Text = "toolStripSplitButton1";
             // 
-            // aaaToolStripMenuItem
-            // 
-            this.aaaToolStripMenuItem.Name = "aaaToolStripMenuItem";
-            this.aaaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.aaaToolStripMenuItem.Text = "aaa";
-            // 
             // aaaToolStripMenuItem1
             // 
             this.aaaToolStripMenuItem1.Name = "aaaToolStripMenuItem1";
-            this.aaaToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.aaaToolStripMenuItem1.Size = new System.Drawing.Size(116, 26);
             this.aaaToolStripMenuItem1.Text = "aaa";
             // 
             // Form2
@@ -167,6 +167,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form2";
             this.Text = "Form2";

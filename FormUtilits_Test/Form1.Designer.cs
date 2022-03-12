@@ -209,6 +209,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.visualStudioTabControl1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";

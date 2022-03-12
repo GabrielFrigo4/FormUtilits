@@ -47,7 +47,7 @@ public class FormTheme
         {
             SetWindowTheme(form.Handle, "DarkMode_Explorer", null);
         }
-        else if(IsLight)
+        else if (IsLight)
         {
             SetWindowTheme(form.Handle, "Explorer", null);
         }
@@ -58,7 +58,7 @@ public class FormTheme
         string RegistryKey = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes";
         string? theme;
         theme = (string?)Registry.GetValue(RegistryKey, "CurrentTheme", string.Empty);
-        if(theme != null)
+        if (theme != null)
         {
             theme = theme.Split('\\').Last().Split('.').First().ToString();
             return theme;
@@ -71,7 +71,7 @@ public class FormTheme
 
     public void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
     {
-        if(IsSystem == true)
+        if (IsSystem == true)
         {
             SetThemeMode(FormThemeMode.System);
         }
@@ -100,7 +100,7 @@ public class FormTheme
         {
             isModeLight = true;
         }
-        else if(DarkThemes.Contains(themeName))
+        else if (DarkThemes.Contains(themeName))
         {
             isModeLight = false;
         }
@@ -148,7 +148,7 @@ public class FormTheme
         IsInit = true;
     }
 
-    public bool SetThemeMode(FormThemeMode mode)
+    public void SetThemeMode(FormThemeMode mode)
     {
         bool isDark = IsDark, isLight = IsLight;
 
@@ -172,14 +172,9 @@ public class FormTheme
             IsSystem = true;
         }
 
-        if(isDark != IsDark || isLight != IsLight)
+        if (isDark != IsDark || isLight != IsLight)
         {
             SetThemeModeForm(MainForm, mode, true);
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
@@ -198,11 +193,6 @@ public class FormTheme
         }
 
         FormThemeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem));
-
-        foreach (Control c in form.Controls)
-        {
-            UpdateColorControls(c);
-        }
 
         void UpdateColorControls(Control myControl)
         {
@@ -233,6 +223,100 @@ public class FormTheme
             }
         }
 
+        foreach (Control c in form.Controls)
+        {
+            UpdateColorControls(c);
+        }
+
+        SetFormColor(form, main, other);
+        if (setControlBox)
+        {
+            SetControlBox(form);
+        }
+    }
+    #endregion
+
+    #region My Public Aynsc
+    public void SetThemeModeAynsc(FormThemeMode mode)
+    {
+        bool isDark = IsDark, isLight = IsLight;
+
+        CurrentMode = mode;
+        if (CurrentMode == FormThemeMode.Light)
+        {
+            IsLight = true;
+            IsDark = false;
+            IsSystem = false;
+        }
+        else if (CurrentMode == FormThemeMode.Dark)
+        {
+            IsLight = false;
+            IsDark = true;
+            IsSystem = false;
+        }
+        else if (CurrentMode == FormThemeMode.System)
+        {
+            IsLight = IsSystemModeLight();
+            IsDark = IsSystemModeDark();
+            IsSystem = true;
+        }
+
+        if (isDark != IsDark || isLight != IsLight)
+        {
+            SetThemeModeFormAynsc(MainForm, mode, true);
+        }
+    }
+
+    public async void SetThemeModeFormAynsc(Form form, FormThemeMode mode, bool setControlBox = true)
+    {
+        Color main, other;
+        if (IsDark)
+        {
+            main = Color.FromArgb(23, 23, 23);
+            other = Color.White;
+        }
+        else
+        {
+            main = Color.WhiteSmoke;
+            other = Color.Black;
+        }
+
+        await Task.Run(() => FormThemeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem)));
+
+        async void UpdateColorControlsAynsc(Control myControl)
+        {
+            if (IsDark)
+            {
+                SetWindowTheme(myControl.Handle, "DarkMode_Explorer", null);
+            }
+            else
+            {
+                SetWindowTheme(myControl.Handle, "Explorer", null);
+            }
+
+            FormThemeLoopArgs args = new FormThemeLoopArgs(myControl, main, other, mode, IsLight, IsDark, IsSystem);
+            await Task.Run(() => FormThemeLoop?.Invoke(this, args));
+            if (args.SetTheme == false)
+            {
+                myControl.BackColor = main;
+                myControl.ForeColor = other;
+            }
+            if (args.Stop == true)
+            {
+                return;
+            }
+
+            foreach (Control subC in myControl.Controls)
+            {
+                await Task.Run(() => UpdateColorControlsAynsc(subC));
+            }
+        }
+
+        foreach (Control c in form.Controls)
+        {
+            await Task.Run(() => UpdateColorControlsAynsc(c));
+        }
+
         SetFormColor(form, main, other);
         if (setControlBox)
         {
@@ -244,7 +328,7 @@ public class FormTheme
     #region MyControlFuncs
     void SetTheme_Label(object? sender, FormThemeLoopArgs e)
     {
-        if(e.MyControl is Label)
+        if (e.MyControl is Label)
         {
             e.MyControl.BackColor = Color.Transparent;
             e.MyControl.ForeColor = e.Other;
@@ -272,7 +356,7 @@ public class FormTheme
             e.MyControl.BackColor = e.Main;
             e.MyControl.ForeColor = e.Other;
             menuStrip.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(e.IsDark));
-            foreach(object item in menuStrip.Items)
+            foreach (object item in menuStrip.Items)
             {
                 if (item is ToolStripMenuItem)
                 {
