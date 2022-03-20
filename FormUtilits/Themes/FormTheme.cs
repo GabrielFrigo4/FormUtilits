@@ -80,11 +80,11 @@ public class FormTheme
 
     #region My Public Funcs
     public Form MainForm { get; private set; }
-    public static bool IsLight { get; private set; }
-    public static bool IsDark { get; private set; }
-    public static bool IsSystem { get; private set; }
-    public static FormThemeMode CurrentMode { get; private set; }
-    public static bool IsInit { get; private set; }
+    public bool IsLight { get; private set; }
+    public bool IsDark { get; private set; }
+    public bool IsSystem { get; private set; }
+    public FormThemeMode CurrentMode { get; private set; }
+    public bool IsInit { get; private set; }
 
     public readonly string[] DarkThemes = { "dark", "themeA", "themeB" };
     public readonly string[] LightThemes = { "aero", "themeC", "themeD" };
@@ -144,8 +144,20 @@ public class FormTheme
 
     public void Init()
     {
-        SetThemeMode(FormThemeMode.System);
+        if (!IsInit)
+        {
+            SetThemeMode(FormThemeMode.System);
+        }
         IsInit = true;
+    }
+
+    public void Reset()
+    {
+        IsLight = false;
+        IsDark = false;
+        IsSystem = false;
+        IsInit = false;
+        CurrentMode = FormThemeMode.System;
     }
 
     public void SetThemeMode(FormThemeMode mode)
