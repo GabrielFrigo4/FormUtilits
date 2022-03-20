@@ -1554,7 +1554,7 @@ namespace FormUtilits.VisualStudioControl
                     if (!base.AutoScroll)
                         base.AutoScroll = true;
                     Size newSize = value;
-                    if (WordWrap && WordWrapMode != FastColoredTextBoxNS.WordWrapMode.Custom)
+                    if (WordWrap && WordWrapMode != WordWrapMode.Custom)
                     {
                         int maxWidth = GetMaxLineWordWrapedWidth();
                         newSize = new Size(Math.Min(newSize.Width, maxWidth), newSize.Height);
