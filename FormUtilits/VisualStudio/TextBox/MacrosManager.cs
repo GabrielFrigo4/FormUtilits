@@ -13,7 +13,7 @@ public class MacrosManager
 {
     private readonly List<object> macro = new List<object>();
 
-    internal MacrosManager(FastColoredTextBox ctrl)
+    internal MacrosManager(VisualStudioTextEditor ctrl)
     {
         UnderlayingControl = ctrl;
         AllowMacroRecordingByUser = true;
@@ -38,7 +38,7 @@ public class MacrosManager
     /// <summary>
     /// FCTB
     /// </summary>
-    public FastColoredTextBox UnderlayingControl { get; private set; }
+    public VisualStudioTextEditor UnderlayingControl { get; private set; }
 
     /// <summary>
     /// Executes recorded macro

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FormUtilits.VisualStudioControl;
+﻿namespace FormUtilits.VisualStudioControl;
 /// <summary>
 /// Char and style
 /// </summary>

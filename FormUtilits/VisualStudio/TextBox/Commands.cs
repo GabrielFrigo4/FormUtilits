@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FormUtilits.VisualStudioControl;
+﻿namespace FormUtilits.VisualStudioControl;
 /// <summary>
 /// Insert single char
 /// </summary>

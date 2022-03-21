@@ -16,14 +16,14 @@ namespace FormUtilits.VisualStudioControl
     {
         public EventHandler TargetChanged;
 
-        FastColoredTextBox target;
+        VisualStudioTextEditor target;
         private float scale = 0.3f;
         private bool needRepaint = true;
         private Place startPlace = Place.Empty;
         private bool scrollbarVisible = true;
 
         [Description("Target FastColoredTextBox")]
-        public FastColoredTextBox Target
+        public VisualStudioTextEditor Target
         {
             get { return target; }
             set
@@ -91,14 +91,14 @@ namespace FormUtilits.VisualStudioControl
                 TargetChanged(this, EventArgs.Empty);
         }
 
-        protected virtual void UnSubscribe(FastColoredTextBox target)
+        protected virtual void UnSubscribe(VisualStudioTextEditor target)
         {
             target.Scroll -= new ScrollEventHandler(Target_Scroll);
             target.SelectionChangedDelayed -= new EventHandler(Target_SelectionChanged);
             target.VisibleRangeChanged -= new EventHandler(Target_VisibleRangeChanged);
         }
 
-        protected virtual void Subscribe(FastColoredTextBox target)
+        protected virtual void Subscribe(VisualStudioTextEditor target)
         {
             target.Scroll += new ScrollEventHandler(Target_Scroll);
             target.SelectionChangedDelayed += new EventHandler(Target_SelectionChanged);

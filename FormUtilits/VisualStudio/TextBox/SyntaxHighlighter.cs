@@ -66,7 +66,7 @@ public class SyntaxHighlighter : IDisposable
     protected Regex HTMLTagNameRegex;
     protected Regex HTMLTagRegex;
 
-    protected FastColoredTextBox currentTb;
+    protected VisualStudioTextEditor currentTb;
 
     public static RegexOptions RegexCompiledOption
     {
@@ -79,7 +79,7 @@ public class SyntaxHighlighter : IDisposable
         }
     }
 
-    public SyntaxHighlighter(FastColoredTextBox currentTb) {
+    public SyntaxHighlighter(VisualStudioTextEditor currentTb) {
         this.currentTb = currentTb;
     }
 
@@ -191,7 +191,7 @@ public class SyntaxHighlighter : IDisposable
 
     public virtual void AutoIndentNeeded(object sender, AutoIndentEventArgs args)
     {
-        var tb = (sender as FastColoredTextBox);
+        var tb = (sender as VisualStudioTextEditor);
         Language language = tb.Language;
         switch (language)
         {
@@ -399,7 +399,7 @@ public class SyntaxHighlighter : IDisposable
         RestoreBrackets(range.tb, oldBrackets);
     }
 
-    protected void RestoreBrackets(FastColoredTextBox tb, char[] oldBrackets)
+    protected void RestoreBrackets(VisualStudioTextEditor tb, char[] oldBrackets)
     {
         tb.LeftBracket = oldBrackets[0];
         tb.RightBracket = oldBrackets[1];
@@ -407,7 +407,7 @@ public class SyntaxHighlighter : IDisposable
         tb.RightBracket2 = oldBrackets[3];
     }
 
-    protected char[] RememberBrackets(FastColoredTextBox tb)
+    protected char[] RememberBrackets(VisualStudioTextEditor tb)
     {
         return new[] { tb.LeftBracket, tb.RightBracket, tb.LeftBracket2, tb.RightBracket2 };
     }

@@ -69,12 +69,12 @@ class FooTextChangedDescriptor : EventDescriptor
 
     public override void AddEventHandler(object component, Delegate value)
     {
-        (component as FastColoredTextBox).BindingTextChanged += value as EventHandler;
+        (component as VisualStudioTextEditor).BindingTextChanged += value as EventHandler;
     }
 
     public override Type ComponentType
     {
-        get { return typeof(FastColoredTextBox); }
+        get { return typeof(VisualStudioTextEditor); }
     }
 
     public override Type EventType
@@ -89,6 +89,6 @@ class FooTextChangedDescriptor : EventDescriptor
 
     public override void RemoveEventHandler(object component, Delegate value)
     {
-        (component as FastColoredTextBox).BindingTextChanged -= value as EventHandler;
+        (component as VisualStudioTextEditor).BindingTextChanged -= value as EventHandler;
     }
 }

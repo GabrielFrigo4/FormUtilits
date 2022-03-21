@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -43,14 +44,16 @@
             this.aaaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.aaaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.visualStudioTextEditor1 = new FormUtilits.VisualStudioControl.VisualStudioTextEditor();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.visualStudioTextEditor1)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(386, 105);
+            this.comboBox1.Location = new System.Drawing.Point(585, 357);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(151, 28);
             this.comboBox1.TabIndex = 0;
@@ -159,11 +162,51 @@
             this.aaaToolStripMenuItem1.Size = new System.Drawing.Size(116, 26);
             this.aaaToolStripMenuItem1.Text = "aaa";
             // 
+            // visualStudioTextEditor1
+            // 
+            this.visualStudioTextEditor1.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.visualStudioTextEditor1.AutoIndentCharsPatterns = "\r\n                ^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n        " +
+    "        ^\\s*(case|default)\\s*[^:]*(?<range>:)\\s*(?<range>[^;]+);\r\n              " +
+    "  ";
+            this.visualStudioTextEditor1.AutoScrollMinSize = new System.Drawing.Size(261, 18);
+            this.visualStudioTextEditor1.BackBrush = null;
+            this.visualStudioTextEditor1.BracketsHighlightStrategy = FormUtilits.VisualStudioControl.BracketsHighlightStrategy.Strategy2;
+            this.visualStudioTextEditor1.CharHeight = 18;
+            this.visualStudioTextEditor1.CharWidth = 10;
+            this.visualStudioTextEditor1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.visualStudioTextEditor1.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.visualStudioTextEditor1.IsReplaceMode = false;
+            this.visualStudioTextEditor1.Language = FormUtilits.VisualStudioControl.Language.CSharp;
+            this.visualStudioTextEditor1.LeftBracket = '(';
+            this.visualStudioTextEditor1.LeftBracket2 = '{';
+            this.visualStudioTextEditor1.Location = new System.Drawing.Point(40, 81);
+            this.visualStudioTextEditor1.Name = "visualStudioTextEditor1";
+            this.visualStudioTextEditor1.Paddings = new System.Windows.Forms.Padding(0);
+            this.visualStudioTextEditor1.RightBracket = ')';
+            this.visualStudioTextEditor1.RightBracket2 = '}';
+            this.visualStudioTextEditor1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.visualStudioTextEditor1.ServiceColors = ((FormUtilits.VisualStudioControl.ServiceColors)(resources.GetObject("visualStudioTextEditor1.ServiceColors")));
+            this.visualStudioTextEditor1.Size = new System.Drawing.Size(314, 167);
+            this.visualStudioTextEditor1.TabIndex = 3;
+            this.visualStudioTextEditor1.Text = "visualStudioTextEditor1";
+            this.visualStudioTextEditor1.Zoom = 100;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.visualStudioTextEditor1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.menuStrip1);
@@ -175,6 +218,7 @@
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.visualStudioTextEditor1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -196,5 +240,6 @@
         private ToolStripMenuItem bungaToolStripMenuItem;
         private ToolStripMenuItem aaaToolStripMenuItem;
         private ToolStripMenuItem aaaToolStripMenuItem1;
+        private FormUtilits.VisualStudioControl.VisualStudioTextEditor visualStudioTextEditor1;
     }
 }

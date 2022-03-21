@@ -16,7 +16,7 @@ public class TextSource: IList<Line>, IDisposable
     protected LinesAccessor linesAccessor;
     int lastLineUniqueId;
     public CommandManager Manager { get; set; }
-    FastColoredTextBox currentTB;
+    VisualStudioTextEditor currentTB;
     /// <summary>
     /// Styles
     /// </summary>
@@ -52,7 +52,7 @@ public class TextSource: IList<Line>, IDisposable
     /// <summary>
     /// Current focused FastColoredTextBox
     /// </summary>
-    public FastColoredTextBox CurrentTB {
+    public VisualStudioTextEditor CurrentTB {
         get { return currentTB; }
         set {
             if (currentTB == value)
@@ -85,7 +85,7 @@ public class TextSource: IList<Line>, IDisposable
     /// </summary>
     public TextStyle DefaultStyle { get; set; }
 
-    public TextSource(FastColoredTextBox currentTB)
+    public TextSource(VisualStudioTextEditor currentTB)
     {
         this.CurrentTB = currentTB;
         linesAccessor = new LinesAccessor(this);

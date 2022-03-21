@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Drawing;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 
@@ -16,7 +12,7 @@ namespace FormUtilits.VisualStudioControl
     {
         AutocompleteListView listView;
         public ToolStripControlHost host;
-        public Range Fragment { get; internal set; }
+        public Range? Fragment { get; internal set; }
 
         /// <summary>
         /// Regex pattern for serach fragment around caret
@@ -29,15 +25,15 @@ namespace FormUtilits.VisualStudioControl
         /// <summary>
         /// User selects item
         /// </summary>
-        public event EventHandler<SelectingEventArgs> Selecting;
+        public event EventHandler<SelectingEventArgs>? Selecting;
         /// <summary>
         /// It fires after item inserting
         /// </summary>
-        public event EventHandler<SelectedEventArgs> Selected;
+        public event EventHandler<SelectedEventArgs>? Selected;
         /// <summary>
         /// Occurs when popup menu is opening
         /// </summary>
-        public new event EventHandler<CancelEventArgs> Opening;
+        public new event EventHandler<CancelEventArgs>? Opening;
         /// <summary>
         /// Allow TAB for select menu item
         /// </summary>
@@ -75,7 +71,7 @@ namespace FormUtilits.VisualStudioControl
             set { listView.HoveredColor = value; }
         }
 
-        public AutocompleteMenu(FastColoredTextBox tb)
+        public AutocompleteMenu(VisualStudioTextEditor tb)
         {
             // create a new popup and add the list view to it 
             AutoClose = false;
@@ -94,7 +90,6 @@ namespace FormUtilits.VisualStudioControl
             listView.Parent = this;
             SearchPattern = @"[\w\.]";
             MinFragmentLength = 2;
-
         }
 
         public new Font Font
@@ -105,8 +100,7 @@ namespace FormUtilits.VisualStudioControl
 
         new internal void OnOpening(CancelEventArgs args)
         {
-            if (Opening != null)
-                Opening(this, args);
+            Opening?.Invoke(this, args);
         }
 
         public new void Close()
@@ -133,14 +127,12 @@ namespace FormUtilits.VisualStudioControl
 
         internal void OnSelecting(SelectingEventArgs args)
         {
-            if (Selecting != null)
-                Selecting(this, args);
+            Selecting?.Invoke(this, args);
         }
 
         public void OnSelected(SelectedEventArgs args)
         {
-            if (Selected != null)
-                Selected(this, args);
+            Selected?.Invoke(this, args);
         }
 
         public new AutocompleteListView Items
@@ -204,7 +196,7 @@ namespace FormUtilits.VisualStudioControl
     [System.ComponentModel.ToolboxItem(false)]
     public class AutocompleteListView : UserControl, IDisposable
     {
-        public event EventHandler FocussedItemIndexChanged;
+        public event EventHandler? FocussedItemIndexChanged;
 
         internal List<AutocompleteItem> visibleItems;
         IEnumerable<AutocompleteItem> sourceItems = new List<AutocompleteItem>();
@@ -216,9 +208,9 @@ namespace FormUtilits.VisualStudioControl
             get { return Font.Height + 2; }
         }
 
-        AutocompleteMenu Menu { get { return Parent as AutocompleteMenu; } }
+        AutocompleteMenu Menu { get { return (AutocompleteMenu)Parent; } }
         int oldItemCount = 0;
-        FastColoredTextBox tb;
+        VisualStudioTextEditor tb;
         internal ToolTip toolTip = new ToolTip();
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
@@ -243,13 +235,12 @@ namespace FormUtilits.VisualStudioControl
                 if (focussedItemIndex != value)
                 {
                     focussedItemIndex = value;
-                    if (FocussedItemIndexChanged != null)
-                        FocussedItemIndexChanged(this, EventArgs.Empty);
+                    FocussedItemIndexChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
 
-        public AutocompleteItem FocussedItem
+        public AutocompleteItem? FocussedItem
         {
             get
             {
@@ -259,12 +250,14 @@ namespace FormUtilits.VisualStudioControl
             }
             set
             {
-                FocussedItemIndex = visibleItems.IndexOf(value);
+                if(value != null)
+                    FocussedItemIndex = visibleItems.IndexOf(value);
             }
         }
 
-        internal AutocompleteListView(FastColoredTextBox tb)
+        internal AutocompleteListView(VisualStudioTextEditor tb)
         {
+            ImageList = new ImageList();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
             base.Font = new Font(FontFamily.GenericSansSerif, 9);
             visibleItems = new List<AutocompleteItem>();
@@ -309,7 +302,7 @@ namespace FormUtilits.VisualStudioControl
             };
         }
 
-        private void ToolTip_Popup(object sender, PopupEventArgs e)
+        private void ToolTip_Popup(object? sender, PopupEventArgs e)
         {
             if (MaxToolTipSize.Height > 0 && MaxToolTipSize.Width > 0)
                 e.ToolTipSize = MaxToolTipSize;
@@ -345,7 +338,7 @@ namespace FormUtilits.VisualStudioControl
                 Menu.Close();
         }
 
-        void tb_KeyPressed(object sender, KeyPressEventArgs e)
+        void tb_KeyPressed(object? sender, KeyPressEventArgs e)
         {
             bool backspaceORdel = e.KeyChar == '\b' || e.KeyChar == 0xff;
 
@@ -359,7 +352,7 @@ namespace FormUtilits.VisualStudioControl
                 ResetTimer(timer);
         }
 
-        void timer_Tick(object sender, EventArgs e)
+        void timer_Tick(object? sender, EventArgs e)
         {
             timer.Stop();
             DoAutocomplete(false);
@@ -442,7 +435,7 @@ namespace FormUtilits.VisualStudioControl
                 Menu.Close();
         }
 
-        void tb_SelectionChanged(object sender, EventArgs e)
+        void tb_SelectionChanged(object? sender, EventArgs e)
         {
             /*
             FastColoredTextBox tb = sender as FastColoredTextBox;
@@ -456,11 +449,21 @@ namespace FormUtilits.VisualStudioControl
                 bool needClose = false;
 
                 if (!tb.Selection.IsEmpty)
+                {
                     needClose = true;
-                else
-                    if (!Menu.Fragment.Contains(tb.Selection.Start))
+                }
+                else 
+                {
+                    bool contains = false;
+                    bool? containFrag = !Menu.Fragment?.Contains(tb.Selection.Start);
+                    if(containFrag.HasValue)
                     {
-                        if (tb.Selection.Start.iLine == Menu.Fragment.End.iLine && tb.Selection.Start.iChar == Menu.Fragment.End.iChar + 1)
+                        contains = containFrag.Value;
+                    }
+
+                    if (contains)
+                    {
+                        if (tb.Selection.Start.iLine == Menu.Fragment?.End.iLine && tb.Selection.Start.iChar == Menu.Fragment.End.iChar + 1)
                         {
                             //user press key at end of fragment
                             char c = tb.Selection.CharBeforeStart;
@@ -468,24 +471,24 @@ namespace FormUtilits.VisualStudioControl
                                 needClose = true;
                         }
                         else
+                        {
                             needClose = true;
+                        }
                     }
+                }
 
                 if (needClose)
                     Menu.Close();
             }
-            
         }
 
-        void tb_KeyDown(object sender, KeyEventArgs e)
+        void tb_KeyDown(object? sender, KeyEventArgs e)
         {
-            var tb = sender as FastColoredTextBox;
-
             if (Menu.Visible)
                 if (ProcessKey(e.KeyCode, e.Modifiers))
                     e.Handled = true;
 
-            if (!Menu.Visible)
+            if (!Menu.Visible && sender is VisualStudioTextEditor tb)
             {
                 if (tb.HotkeysMapping.ContainsKey(e.KeyData) && tb.HotkeysMapping[e.KeyData] == FCTBAction.AutocompleteMenu)
                 {
@@ -582,11 +585,13 @@ namespace FormUtilits.VisualStudioControl
 
         internal virtual void OnSelecting()
         {
-            if (FocussedItemIndex < 0 || FocussedItemIndex >= visibleItems.Count)
-                return;
+            if (FocussedItemIndex < 0 || FocussedItemIndex >= visibleItems.Count) return;
+
             tb.TextSource.Manager.BeginAutoUndoCommands();
             try
             {
+                if (FocussedItem == null || Menu.Fragment == null) return;
+                
                 AutocompleteItem item = FocussedItem;
                 SelectingEventArgs args = new SelectingEventArgs()
                 {
@@ -778,7 +783,7 @@ namespace FormUtilits.VisualStudioControl
 
     public class SelectingEventArgs : EventArgs
     {
-        public AutocompleteItem Item { get; internal set; }
+        public AutocompleteItem? Item { get; internal set; }
         public bool Cancel {get;set;}
         public int SelectedIndex{get;set;}
         public bool Handled { get; set; }
@@ -786,7 +791,7 @@ namespace FormUtilits.VisualStudioControl
 
     public class SelectedEventArgs : EventArgs
     {
-        public AutocompleteItem Item { get; internal set; }
-        public FastColoredTextBox Tb { get; set; }
+        public AutocompleteItem? Item { get; internal set; }
+        public VisualStudioTextEditor? Tb { get; set; }
     }
 }

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Drawing;
-
-namespace FormUtilits.VisualStudioControl;
+﻿namespace FormUtilits.VisualStudioControl;
 /// <summary>
 /// Item of autocomplete menu
 /// </summary>
 public class AutocompleteItem
 {
-    public string Text;
+    public string Text = "";
     public int ImageIndex = -1;
-    public object Tag;
-    string toolTipTitle;
-    string toolTipText;
-    string menuText;
-    public AutocompleteMenu Parent { get; internal set; }
+    public object Tag = new object();
+    string toolTipTitle = "";
+    string toolTipText = "";
+    string menuText = "";
+    public AutocompleteMenu? Parent { get; internal set; }
     
 
     public AutocompleteItem()
@@ -169,6 +166,8 @@ public class SnippetAutocompleteItem : AutocompleteItem
 
     public override void OnSelected(AutocompleteMenu popupMenu, SelectedEventArgs e)
     {
+        if (e.Tb == null || popupMenu.Fragment == null) return;
+
         e.Tb.BeginUpdate();
         e.Tb.Selection.BeginUpdate();
         //remember places
@@ -215,12 +214,13 @@ public class SnippetAutocompleteItem : AutocompleteItem
 public class MethodAutocompleteItem : AutocompleteItem
 {
     string firstPart;
-    string lowercaseText;
+    readonly string lowercaseText;
 
     public MethodAutocompleteItem(string text)
         : base(text)
     {
         lowercaseText = Text.ToLower();
+        firstPart = "";
     }
 
     public override CompareResult Compare(string fragmentText)

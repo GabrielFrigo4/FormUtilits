@@ -7,11 +7,11 @@ namespace FormUtilits.VisualStudioControl
 {
     public partial class ReplaceForm : Form
     {
-        FastColoredTextBox tb;
+        VisualStudioTextEditor tb;
         bool firstSearch = true;
         Place startPlace;
 
-        public ReplaceForm(FastColoredTextBox tb)
+        public ReplaceForm(VisualStudioTextEditor tb)
         {
             InitializeComponent();
             this.tb = tb;

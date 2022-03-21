@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System;
-using System.Drawing.Drawing2D;
-using System.Collections.Generic;
+﻿using System.Drawing.Drawing2D;
 
 namespace FormUtilits.VisualStudioControl;
 /// <summary>
@@ -17,7 +14,7 @@ public abstract class Style : IDisposable
     /// <summary>
     /// Occurs when user click on StyleVisualMarker joined to this style 
     /// </summary>
-    public event EventHandler<VisualMarkerEventArgs> VisualMarkerClick;
+    public event EventHandler<VisualMarkerEventArgs>? VisualMarkerClick;
 
     /// <summary>
     /// Constructor
@@ -38,17 +35,16 @@ public abstract class Style : IDisposable
     /// <summary>
     /// Occurs when user click on StyleVisualMarker joined to this style 
     /// </summary>
-    public virtual void OnVisualMarkerClick(FastColoredTextBox tb, VisualMarkerEventArgs args)
+    public virtual void OnVisualMarkerClick(VisualStudioTextEditor tb, VisualMarkerEventArgs args)
     {
-        if (VisualMarkerClick != null)
-            VisualMarkerClick(tb, args);
+        VisualMarkerClick?.Invoke(tb, args);
     }
 
     /// <summary>
     /// Shows VisualMarker
     /// Call this method in Draw method, when you need to show VisualMarker for your style
     /// </summary>
-    protected virtual void AddVisualMarker(FastColoredTextBox tb, StyleVisualMarker marker)
+    protected virtual void AddVisualMarker(VisualStudioTextEditor tb, StyleVisualMarker marker)
     {
         tb.AddVisualMarker(marker);
     }
@@ -101,13 +97,13 @@ public abstract class Style : IDisposable
 /// </summary>
 public class TextStyle : Style
 {
-    public Brush ForeBrush { get; set; }
-    public Brush BackgroundBrush { get; set; }
+    public Brush? ForeBrush { get; set; }
+    public Brush? BackgroundBrush { get; set; }
     public FontStyle FontStyle { get; set; }
     //public readonly Font Font;
     public StringFormat stringFormat;
 
-    public TextStyle(Brush foreBrush, Brush backgroundBrush, FontStyle fontStyle)
+    public TextStyle(Brush? foreBrush, Brush? backgroundBrush, FontStyle fontStyle)
     {
         this.ForeBrush = foreBrush;
         this.BackgroundBrush = backgroundBrush;
@@ -136,7 +132,7 @@ public class TextStyle : Style
                 //IME mode
                 for (int i = range.Start.iChar; i < range.End.iChar; i++)
                 {
-                    SizeF size = FastColoredTextBox.GetCharSize(f, line[i].c);
+                    SizeF size = VisualStudioTextEditor.GetCharSize(f, line[i].c);
 
                     var gs = gr.Save();
                     float k = size.Width > range.tb.CharWidth + 1 ? range.tb.CharWidth/size.Width : 1;
@@ -164,15 +160,15 @@ public class TextStyle : Style
     {
         string result = "";
 
-        if (BackgroundBrush is SolidBrush)
+        if (BackgroundBrush is SolidBrush backgroundSolidBrush)
         {
-            var s =  ExportToHTML.GetColorAsString((BackgroundBrush as SolidBrush).Color);
+            var s =  ExportToHTML.GetColorAsString(backgroundSolidBrush.Color);
             if (s != "")
                 result += "background-color:" + s + ";";
         }
-        if (ForeBrush is SolidBrush)
+        if (ForeBrush is SolidBrush foreSolidBrush)
         {
-            var s = ExportToHTML.GetColorAsString((ForeBrush as SolidBrush).Color);
+            var s = ExportToHTML.GetColorAsString(foreSolidBrush.Color);
             if (s != "")
                 result += "color:" + s + ";";
         }
@@ -192,11 +188,11 @@ public class TextStyle : Style
     {
         var result = new RTFStyleDescriptor();
 
-        if (BackgroundBrush is SolidBrush)
-            result.BackColor = (BackgroundBrush as SolidBrush).Color;
+        if (BackgroundBrush is SolidBrush backgroundSolidBrush)
+            result.BackColor = backgroundSolidBrush.Color;
         
-        if (ForeBrush is SolidBrush)
-            result.ForeColor = (ForeBrush as SolidBrush).Color;
+        if (ForeBrush is SolidBrush foreSolidBrush)
+            result.ForeColor = foreSolidBrush.Color;
         
         if ((FontStyle & FontStyle.Bold) != 0)
             result.AdditionalTags += @"\b";
@@ -239,7 +235,7 @@ public class FoldedBlockStyle : TextStyle
             //create marker
             range.tb.AddVisualMarker(new FoldedAreaMarker(range.Start.iLine, new Rectangle(firstNonSpaceSymbolX, position.Y, position.X + (range.End.iChar - range.Start.iChar) * range.tb.CharWidth - firstNonSpaceSymbolX, range.tb.CharHeight)));
         }
-        else
+        else if(ForeBrush != null)
         {
             //draw '...'
             using(Font f = new Font(range.tb.Font, FontStyle))
@@ -255,15 +251,15 @@ public class FoldedBlockStyle : TextStyle
 /// </summary>
 public class SelectionStyle : Style
 {
-    public Brush BackgroundBrush{ get; set;}
-    public Brush ForegroundBrush { get; private set; }
+    public Brush? BackgroundBrush { get; set;}
+    public Brush? ForegroundBrush { get; private set; }
 
     public override bool IsExportable
     {
         get{return false;}  set{}
     }
 
-    public SelectionStyle(Brush backgroundBrush, Brush foregroundBrush = null)
+    public SelectionStyle(Brush? backgroundBrush, Brush? foregroundBrush = null)
     {
         this.BackgroundBrush = backgroundBrush;
         this.ForegroundBrush = foregroundBrush;
@@ -324,9 +320,9 @@ public class MarkerStyle : Style
     {
         string result = "";
 
-        if (BackgroundBrush is SolidBrush)
+        if (BackgroundBrush is SolidBrush backgroundSolidBrush)
         {
-            var s = ExportToHTML.GetColorAsString((BackgroundBrush as SolidBrush).Color);
+            var s = ExportToHTML.GetColorAsString(backgroundSolidBrush.Color);
             if (s != "")
                 result += "background-color:" + s + ";";
         }

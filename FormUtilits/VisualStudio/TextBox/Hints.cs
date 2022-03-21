@@ -10,10 +10,10 @@ namespace FormUtilits.VisualStudioControl;
 /// </summary>
 public class Hints : ICollection<Hint>, IDisposable
 {
-    FastColoredTextBox tb;
+    VisualStudioTextEditor tb;
     List<Hint> items = new List<Hint>();
 
-    public Hints(FastColoredTextBox tb)
+    public Hints(VisualStudioTextEditor tb)
     {
         this.tb = tb;
         tb.TextChanged += OnTextBoxTextChanged;

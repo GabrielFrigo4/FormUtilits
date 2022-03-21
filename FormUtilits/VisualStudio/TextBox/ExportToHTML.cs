@@ -36,7 +36,7 @@ public class ExportToHTML
     /// </summary>
     public bool IncludeLineNumbers { get; set; }
 
-    FastColoredTextBox tb;
+    VisualStudioTextEditor tb;
 
     public ExportToHTML()
     {
@@ -46,7 +46,7 @@ public class ExportToHTML
         UseBr = true;
     }
 
-    public string GetHtml(FastColoredTextBox tb)
+    public string GetHtml(VisualStudioTextEditor tb)
     {
         this.tb = tb;
         Range sel = new Range(tb);

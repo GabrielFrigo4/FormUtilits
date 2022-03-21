@@ -43,7 +43,7 @@ namespace FormUtilits.VisualStudioControl
     /// <summary>
     /// Fast colored textbox
     /// </summary>
-    public partial class FastColoredTextBox : UserControl, ISupportInitialize
+    public partial class VisualStudioTextEditor : UserControl, ISupportInitialize
     {
         internal const int minLeftIndent = 8;
         private const int maxBracketSearchIterations = 1000;
@@ -115,7 +115,7 @@ namespace FormUtilits.VisualStudioControl
         private Color serviceLinesColor;
         private bool showFoldingLines;
         private bool showLineNumbers;
-        private FastColoredTextBox sourceTextBox;
+        private VisualStudioTextEditor sourceTextBox;
         private int startFoldingLine = -1;
         private int updating;
         private Range updatingRange;
@@ -129,7 +129,7 @@ namespace FormUtilits.VisualStudioControl
         /// <summary>
         /// Constructor
         /// </summary>
-        public FastColoredTextBox()
+        public VisualStudioTextEditor()
         {
             //register type provider
             TypeDescriptionProvider prov = TypeDescriptor.GetProvider(GetType());
@@ -1124,7 +1124,7 @@ namespace FormUtilits.VisualStudioControl
         [DefaultValue(null)]
         [Description("Allows to get text from other FastColoredTextBox.")]
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public FastColoredTextBox SourceTextBox
+        public VisualStudioTextEditor SourceTextBox
         {
             get { return sourceTextBox; }
             set

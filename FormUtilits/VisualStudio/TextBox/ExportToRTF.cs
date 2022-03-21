@@ -18,7 +18,7 @@ public class ExportToRTF
     /// </summary>
     public bool UseOriginalFont { get; set; }
 
-    FastColoredTextBox tb;
+    VisualStudioTextEditor tb;
     Dictionary<Color, int> colorTable = new Dictionary<Color, int>();
 
     public ExportToRTF()
@@ -26,7 +26,7 @@ public class ExportToRTF
         UseOriginalFont = true;
     }
 
-    public string GetRtf(FastColoredTextBox tb)
+    public string GetRtf(VisualStudioTextEditor tb)
     {
         this.tb = tb;
         Range sel = new Range(tb);

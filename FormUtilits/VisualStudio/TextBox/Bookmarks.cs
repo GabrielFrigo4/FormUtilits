@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 
 namespace FormUtilits.VisualStudioControl;
 /// <summary>
@@ -46,18 +43,18 @@ public abstract class BaseBookmarks : ICollection<Bookmark>, IDisposable
 /// </summary>
 public class Bookmarks : BaseBookmarks
 {
-    protected FastColoredTextBox tb;
+    protected VisualStudioTextEditor tb;
     protected List<Bookmark> items = new List<Bookmark>();
     protected int counter;
 
-    public Bookmarks(FastColoredTextBox tb)
+    public Bookmarks(VisualStudioTextEditor tb)
     {
         this.tb = tb;
         tb.LineInserted += tb_LineInserted;
         tb.LineRemoved += tb_LineRemoved;
     }
 
-    protected virtual void tb_LineRemoved(object sender, LineRemovedEventArgs e)
+    protected virtual void tb_LineRemoved(object? sender, LineRemovedEventArgs e)
     {
         for(int i=0; i<Count; i++)
         if (items[i].LineIndex >= e.Index)
@@ -91,7 +88,7 @@ public class Bookmarks : BaseBookmarks
         }
     }
 
-    protected virtual void tb_LineInserted(object sender, LineInsertedEventArgs e)
+    protected virtual void tb_LineInserted(object? sender, LineInsertedEventArgs e)
     {
         for (int i = 0; i < Count; i++)
             if (items[i].LineIndex >= e.Index)
@@ -210,7 +207,7 @@ public class Bookmarks : BaseBookmarks
 /// </summary>
 public class Bookmark
 {
-    public FastColoredTextBox TB { get; private set; }
+    public VisualStudioTextEditor TB { get; private set; }
     /// <summary>
     /// Name of bookmark
     /// </summary>
@@ -234,7 +231,7 @@ public class Bookmark
         TB.Invalidate();
     }
 
-    public Bookmark(FastColoredTextBox tb, string name, int lineIndex)
+    public Bookmark(VisualStudioTextEditor tb, string name, int lineIndex)
     {
         this.TB = tb;
         this.Name = name;

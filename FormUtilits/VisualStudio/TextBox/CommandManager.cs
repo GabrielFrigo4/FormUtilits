@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-
-namespace FormUtilits.VisualStudioControl;
+﻿namespace FormUtilits.VisualStudioControl;
 public class CommandManager
 {
     public static int MaxHistoryLength = 200;
@@ -22,21 +19,22 @@ public class CommandManager
 
     public virtual void ExecuteCommand(Command cmd)
     {
-        if (disabledCommands > 0)
-            return;
+        if (disabledCommands > 0) return;
 
         //multirange ?
+        if (cmd.ts == null) return;
+
         if (cmd.ts.CurrentTB.Selection.ColumnSelectionMode)
         if (cmd is UndoableCommand)
             //make wrapper
             cmd = new MultiRangeCommand((UndoableCommand)cmd);
 
 
-        if (cmd is UndoableCommand)
+        if (cmd is UndoableCommand _cmd)
         {
             //if range is ColumnRange, then create wrapper
-            (cmd as UndoableCommand).autoUndo = autoUndoCommands > 0;
-            history.Push(cmd as UndoableCommand);
+            _cmd.autoUndo = autoUndoCommands > 0;
+            history.Push(_cmd);
         }
 
         try
@@ -130,6 +128,8 @@ public class CommandManager
         try
         {
             cmd = redoStack.Pop();
+            if (cmd.sel == null) return;
+
             if (TextSource.CurrentTB.Selection.ColumnSelectionMode)
                 TextSource.CurrentTB.Selection.ColumnSelectionMode = false;
             TextSource.CurrentTB.Selection.Start = cmd.sel.Start;
@@ -171,7 +171,7 @@ public class CommandManager
 
 public abstract class Command
 {
-    public TextSource ts;
+    public TextSource? ts;
     public abstract void Execute();
 }
 
@@ -199,8 +199,8 @@ internal class RangeInfo
 
 public abstract class UndoableCommand : Command
 {
-    internal RangeInfo sel;
-    internal RangeInfo lastSel;
+    internal RangeInfo? sel;
+    internal RangeInfo? lastSel;
     internal bool autoUndo;
 
     public UndoableCommand(TextSource ts)
@@ -216,12 +216,15 @@ public abstract class UndoableCommand : Command
 
     public override void Execute()
     {
+        if (ts == null) return;
         lastSel = new RangeInfo(ts.CurrentTB.Selection);
         OnTextChanged(false);
     }
 
     protected virtual void OnTextChanged(bool invert)
     {
+        if(sel == null || lastSel == null || ts == null) return;
+
         bool b = sel.Start.iLine < lastSel.Start.iLine;
         if (invert)
         {

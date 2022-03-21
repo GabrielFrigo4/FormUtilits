@@ -11,7 +11,7 @@ public class Range : IEnumerable<Place>
 {
     Place start;
     Place end;
-    public readonly FastColoredTextBox tb;
+    public readonly VisualStudioTextEditor tb;
     int preferedPos = -1;
     int updating = 0;
 
@@ -22,7 +22,7 @@ public class Range : IEnumerable<Place>
     /// <summary>
     /// Constructor
     /// </summary>
-    public Range(FastColoredTextBox tb)
+    public Range(VisualStudioTextEditor tb)
     {
         this.tb = tb;
     }
@@ -54,7 +54,7 @@ public class Range : IEnumerable<Place>
     /// <summary>
     /// Constructor
     /// </summary>
-    public Range(FastColoredTextBox tb, int iStartChar, int iStartLine, int iEndChar, int iEndLine)
+    public Range(VisualStudioTextEditor tb, int iStartChar, int iStartLine, int iEndChar, int iEndLine)
         : this(tb)
     {
         start = new Place(iStartChar, iStartLine);
@@ -64,7 +64,7 @@ public class Range : IEnumerable<Place>
     /// <summary>
     /// Constructor
     /// </summary>
-    public Range(FastColoredTextBox tb, Place start, Place end)
+    public Range(VisualStudioTextEditor tb, Place start, Place end)
         : this(tb)
     {
         this.start = start;
@@ -74,7 +74,7 @@ public class Range : IEnumerable<Place>
     /// <summary>
     /// Constructor. Creates range of the line
     /// </summary>
-    public Range(FastColoredTextBox tb, int iLine)
+    public Range(VisualStudioTextEditor tb, int iLine)
         : this(tb)
     {
         start = new Place(0, iLine);

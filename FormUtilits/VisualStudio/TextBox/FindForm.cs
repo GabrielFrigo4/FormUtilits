@@ -9,9 +9,9 @@ namespace FormUtilits.VisualStudioControl
     {
         bool firstSearch = true;
         Place startPlace;
-        FastColoredTextBox tb;
+        VisualStudioTextEditor tb;
 
-        public FindForm(FastColoredTextBox tb)
+        public FindForm(VisualStudioTextEditor tb)
         {
             InitializeComponent();
             this.tb = tb;
