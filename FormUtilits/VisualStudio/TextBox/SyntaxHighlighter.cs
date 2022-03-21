@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -100,12 +96,12 @@ public class SyntaxHighlighter : IDisposable
     {
         switch (language)
         {
-            case Language.CSharp:
+            case Language.Custom:
                 CSharpSyntaxHighlight(range);
                 break;
-            case Language.Shader:
-                ShaderSyntaxHighlight(range);
-                break;
+            //case Language.Shader:
+            //    ShaderSyntaxHighlight(range);
+            //    break;
             default:
                 break;
         }
@@ -115,7 +111,7 @@ public class SyntaxHighlighter : IDisposable
     {
         switch (lang)
         {
-            case Language.CSharp:
+            case Language.Custom:
                 StringStyle = BrownStyle;
                 CommentStyle = GreenStyle;
                 NumberStyle = MagentaStyle;
@@ -131,19 +127,19 @@ public class SyntaxHighlighter : IDisposable
                 KeywordInterfaceStyle = CornflowerBlueBoldStyle;
                 CommentTagStyle = GrayStyle;
                 break;
-            case Language.Shader:
-                StringStyle = BrownStyle;
-                CommentStyle = GreenStyle;
-                NumberStyle = MagentaStyle;
-                AttributeStyle = GreenStyle;
-                StructNameStyle = CadetBlueBoldStyle;
-                KeywordStyle = BlueStyle;
-                ReturnKeywordStyle = CornflowerBlueBoldStyle;
-                KeywordStructStyle = CadetBlueBoldStyle;
-                CommentTagStyle = GrayStyle;
-                ConfigStyle = RedStyle;
-                FunctionStyle = OrangeRedBoldStyle;
-                break;
+            //case Language.Shader:
+            //    StringStyle = BrownStyle;
+            //    CommentStyle = GreenStyle;
+            //    NumberStyle = MagentaStyle;
+            //    AttributeStyle = GreenStyle;
+            //    StructNameStyle = CadetBlueBoldStyle;
+            //    KeywordStyle = BlueStyle;
+            //    ReturnKeywordStyle = CornflowerBlueBoldStyle;
+            //    KeywordStructStyle = CadetBlueBoldStyle;
+            //    CommentTagStyle = GrayStyle;
+            //    ConfigStyle = RedStyle;
+            //    FunctionStyle = OrangeRedBoldStyle;
+            //    break;
         }
     }
 
@@ -173,7 +169,7 @@ public class SyntaxHighlighter : IDisposable
     /// </summary>
     public virtual void HighlightSyntax(string XMLdescriptionFile, Range range)
     {
-        SyntaxDescriptor desc = null;
+        SyntaxDescriptor? desc = null;
         if (!descByXMLfileNames.TryGetValue(XMLdescriptionFile, out desc))
         {
             var doc = new XmlDocument();
@@ -195,10 +191,7 @@ public class SyntaxHighlighter : IDisposable
         Language language = tb.Language;
         switch (language)
         {
-            case Language.CSharp:
-                CSharpAutoIndentNeeded(sender, args);
-                break;
-            case Language.Shader:
+            case Language.Custom:
                 CSharpAutoIndentNeeded(sender, args);
                 break;
             default:
@@ -871,7 +864,6 @@ public class SyntaxHighlighter : IDisposable
 /// </summary>
 public enum Language
 {
-    CSharp,
-    Shader,
     Normal,
+    Custom,
 }

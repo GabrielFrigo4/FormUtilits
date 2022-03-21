@@ -203,10 +203,13 @@ public abstract class UndoableCommand : Command
     internal RangeInfo? lastSel;
     internal bool autoUndo;
 
-    public UndoableCommand(TextSource ts)
+    public UndoableCommand(TextSource? ts)
     {
         this.ts = ts;
-        sel = new RangeInfo(ts.CurrentTB.Selection);
+        if(ts != null)
+        {
+            sel = new RangeInfo(ts.CurrentTB.Selection);
+        }
     }
 
     public virtual void Undo()

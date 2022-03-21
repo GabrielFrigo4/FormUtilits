@@ -1,1 +1,1 @@
-﻿Commands.cs ainda falta corrigir esse e os demais na frente
+﻿EncodingDetector.cs ainda falta corrigir esse e os demais na frente

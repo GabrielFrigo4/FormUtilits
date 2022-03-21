@@ -170,7 +170,7 @@ namespace FormUtilits.VisualStudioControl
             LeftBracket2 = '\x0';
             RightBracket2 = '\x0';
             SyntaxHighlighter = new SyntaxHighlighter(this);
-            language = Language.CSharp;
+            language = Language.Normal;
             PreferredLineWidth = 0;
             needRecalc = true;
             lastNavigatedDateTime = DateTime.Now;

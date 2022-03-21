@@ -13,7 +13,7 @@ public class InsertCharCommand : UndoableCommand
     /// </summary>
     /// <param name="tb">Underlaying textbox</param>
     /// <param name="c">Inserting char</param>
-    public InsertCharCommand(TextSource ts, char c): base(ts)
+    public InsertCharCommand(TextSource? ts, char c): base(ts)
     {
         this.c = c;
     }
@@ -23,6 +23,8 @@ public class InsertCharCommand : UndoableCommand
     /// </summary>
     public override void Undo()
     {
+        if (ts == null || sel == null || lastSel == null) return;
+
         ts.OnTextChanging();
         switch (c)
         {
@@ -60,6 +62,8 @@ public class InsertCharCommand : UndoableCommand
     /// </summary>
     public override void Execute()
     {
+        if (ts == null) return;
+
         ts.CurrentTB.ExpandBlock(ts.CurrentTB.Selection.Start.iLine);
         string s = c.ToString();
         ts.OnTextChanging(ref s);
@@ -200,7 +204,7 @@ public class InsertTextCommand : UndoableCommand
     /// </summary>
     /// <param name="tb">Underlaying textbox</param>
     /// <param name="insertedText">Text for inserting</param>
-    public InsertTextCommand(TextSource ts, string insertedText): base(ts)
+    public InsertTextCommand(TextSource? ts, string insertedText): base(ts)
     {
         this.InsertedText = insertedText;
     }
@@ -210,6 +214,8 @@ public class InsertTextCommand : UndoableCommand
     /// </summary>
     public override void Undo()
     {
+        if (ts == null || sel == null || lastSel == null) return;
+
         ts.CurrentTB.Selection.Start = sel.Start;
         ts.CurrentTB.Selection.End = lastSel.Start;
         ts.OnTextChanging();
@@ -222,6 +228,8 @@ public class InsertTextCommand : UndoableCommand
     /// </summary>
     public override void Execute()
     {
+        if (ts == null) return;
+
         ts.OnTextChanging(ref InsertedText);
         InsertText(InsertedText, ts);
         base.Execute();
@@ -278,7 +286,7 @@ public class ReplaceTextCommand : UndoableCommand
     /// <param name="tb">Underlaying textbox</param>
     /// <param name="ranges">List of ranges for replace</param>
     /// <param name="insertedText">Text for inserting</param>
-    public ReplaceTextCommand(TextSource ts, List<Range> ranges, string insertedText)
+    public ReplaceTextCommand(TextSource? ts, List<Range> ranges, string insertedText)
         : base(ts)
     {
         //sort ranges by place
@@ -291,7 +299,8 @@ public class ReplaceTextCommand : UndoableCommand
         //
         this.ranges = ranges;
         this.insertedText = insertedText;
-        lastSel = sel = new RangeInfo(ts.CurrentTB.Selection);
+        if(ts != null)
+            lastSel = sel = new RangeInfo(ts.CurrentTB.Selection);
     }
 
     /// <summary>
@@ -299,6 +308,8 @@ public class ReplaceTextCommand : UndoableCommand
     /// </summary>
     public override void Undo()
     {
+        if (ts == null) return;
+
         var tb = ts.CurrentTB;
 
         ts.OnTextChanging();
@@ -327,6 +338,8 @@ public class ReplaceTextCommand : UndoableCommand
     /// </summary>
     public override void Execute()
     {
+        if (ts == null) return;
+
         var tb = ts.CurrentTB;
         prevText.Clear();
 
@@ -388,21 +401,21 @@ public class ReplaceTextCommand : UndoableCommand
 /// </summary>
 public class ClearSelectedCommand : UndoableCommand
 {
-    string deletedText;
+    string deletedText = string.Empty;
 
     /// <summary>
     /// Construstor
     /// </summary>
     /// <param name="tb">Underlaying textbox</param>
-    public ClearSelectedCommand(TextSource ts): base(ts)
-    {
-    }
+    public ClearSelectedCommand(TextSource? ts): base(ts) { }
 
     /// <summary>
     /// Undo operation
     /// </summary>
     public override void Undo()
     {
+        if (ts == null || sel == null) return;
+
         ts.CurrentTB.Selection.Start = new Place(sel.FromX, Math.Min(sel.Start.iLine, sel.End.iLine));
         ts.OnTextChanging();
         InsertTextCommand.InsertText(deletedText, ts);
@@ -416,9 +429,10 @@ public class ClearSelectedCommand : UndoableCommand
     /// </summary>
     public override void Execute()
     {
+        if (ts == null) return;
         var tb = ts.CurrentTB;
 
-        string temp = null;
+        string? temp = null;
         ts.OnTextChanging(ref temp);
         if (temp == "")
             throw new ArgumentOutOfRangeException();
@@ -472,8 +486,8 @@ public class ReplaceMultipleTextCommand : UndoableCommand
 
     public class ReplaceRange
     {
-        public Range ReplacedRange { get; set; }
-        public String ReplaceText { get; set; }
+        public Range? ReplacedRange { get; set; }
+        public String? ReplaceText { get; set; }
     }
 
     /// <summary>
@@ -481,19 +495,27 @@ public class ReplaceMultipleTextCommand : UndoableCommand
     /// </summary>
     /// <param name="ts">Underlaying textsource</param>
     /// <param name="ranges">List of ranges for replace</param>
-    public ReplaceMultipleTextCommand(TextSource ts, List<ReplaceRange> ranges)
+    public ReplaceMultipleTextCommand(TextSource? ts, List<ReplaceRange> ranges)
         : base(ts)
     {
         //sort ranges by place
         ranges.Sort((r1, r2) =>
         {
-            if (r1.ReplacedRange.Start.iLine == r2.ReplacedRange.Start.iLine)
-                return r1.ReplacedRange.Start.iChar.CompareTo(r2.ReplacedRange.Start.iChar);
-            return r1.ReplacedRange.Start.iLine.CompareTo(r2.ReplacedRange.Start.iLine);
+            if(r1.ReplacedRange != null && r2.ReplacedRange != null)
+            {
+                if (r1.ReplacedRange.Start.iLine == r2.ReplacedRange.Start.iLine)
+                    return r1.ReplacedRange.Start.iChar.CompareTo(r2.ReplacedRange.Start.iChar);
+                return r1.ReplacedRange.Start.iLine.CompareTo(r2.ReplacedRange.Start.iLine);
+            }
+            else
+            {
+                return 0;
+            }
         });
         //
         this.ranges = ranges;
-        lastSel = sel = new RangeInfo(ts.CurrentTB.Selection);
+        if(ts != null)
+            lastSel = sel = new RangeInfo(ts.CurrentTB.Selection);
     }
 
     /// <summary>
@@ -501,6 +523,8 @@ public class ReplaceMultipleTextCommand : UndoableCommand
     /// </summary>
     public override void Undo()
     {
+        if (ts == null) return;
+
         var tb = ts.CurrentTB;
 
         ts.OnTextChanging();
@@ -508,13 +532,17 @@ public class ReplaceMultipleTextCommand : UndoableCommand
         tb.Selection.BeginUpdate();
         for (int i = 0; i < ranges.Count; i++)
         {
-            tb.Selection.Start = ranges[i].ReplacedRange.Start;
-            for (int j = 0; j < ranges[i].ReplaceText.Length; j++)
+            Range? replacedRange = ranges[i].ReplacedRange;
+            string? replaceText = ranges[i].ReplaceText;
+            if (replacedRange == null || replaceText == null) continue;
+
+            tb.Selection.Start = replacedRange.Start;
+            for (int j = 0; j < replaceText.Length; j++)
                 tb.Selection.GoRight(true);
             ClearSelectedCommand.ClearSelected(ts);
             var prevTextIndex = ranges.Count - 1 - i;
             InsertTextCommand.InsertText(prevText[prevTextIndex], ts);
-            ts.OnTextChanged(ranges[i].ReplacedRange.Start.iLine, ranges[i].ReplacedRange.Start.iLine);
+            ts.OnTextChanged(replacedRange.Start.iLine, replacedRange.Start.iLine);
         }
         tb.Selection.EndUpdate();
 
@@ -526,6 +554,8 @@ public class ReplaceMultipleTextCommand : UndoableCommand
     /// </summary>
     public override void Execute()
     {
+        if (ts == null) return;
+
         var tb = ts.CurrentTB;
         prevText.Clear();
 
@@ -534,12 +564,16 @@ public class ReplaceMultipleTextCommand : UndoableCommand
         tb.Selection.BeginUpdate();
         for (int i = ranges.Count - 1; i >= 0; i--)
         {
-            tb.Selection.Start = ranges[i].ReplacedRange.Start;
-            tb.Selection.End = ranges[i].ReplacedRange.End;
+            Range? replacedRange = ranges[i].ReplacedRange;
+            string? replaceText = ranges[i].ReplaceText;
+            if (replacedRange == null || replaceText == null) continue;
+
+            tb.Selection.Start = replacedRange.Start;
+            tb.Selection.End = replacedRange.End;
             prevText.Add(tb.Selection.Text);
             ClearSelectedCommand.ClearSelected(ts);
-            InsertTextCommand.InsertText(ranges[i].ReplaceText, ts);
-            ts.OnTextChanged(ranges[i].ReplacedRange.Start.iLine, ranges[i].ReplacedRange.End.iLine);
+            InsertTextCommand.InsertText(replaceText, ts);
+            ts.OnTextChanged(replacedRange.Start.iLine, replacedRange.End.iLine);
         }
         tb.Selection.EndUpdate();
         ts.NeedRecalc(new TextSource.TextChangedEventArgs(0, 1));
@@ -567,14 +601,15 @@ public class RemoveLinesCommand : UndoableCommand
     /// <param name="tb">Underlaying textbox</param>
     /// <param name="ranges">List of ranges for replace</param>
     /// <param name="insertedText">Text for inserting</param>
-    public RemoveLinesCommand(TextSource ts, List<int> iLines)
+    public RemoveLinesCommand(TextSource? ts, List<int> iLines)
         : base(ts)
     {
         //sort iLines
         iLines.Sort();
         //
         this.iLines = iLines;
-        lastSel = sel = new RangeInfo(ts.CurrentTB.Selection);
+        if (ts != null)
+            lastSel = sel = new RangeInfo(ts.CurrentTB.Selection);
     }
 
     /// <summary>
@@ -582,6 +617,8 @@ public class RemoveLinesCommand : UndoableCommand
     /// </summary>
     public override void Undo()
     {
+        if (ts == null) return;
+
         var tb = ts.CurrentTB;
 
         ts.OnTextChanging();
@@ -620,6 +657,8 @@ public class RemoveLinesCommand : UndoableCommand
     /// </summary>
     public override void Execute()
     {
+        if (ts == null) return;
+
         var tb = ts.CurrentTB;
         prevText.Clear();
 
@@ -653,17 +692,20 @@ public class RemoveLinesCommand : UndoableCommand
 public class MultiRangeCommand : UndoableCommand
 {
     private UndoableCommand cmd;
-    private Range range;
+    private Range? range;
     private List<UndoableCommand> commandsByRanges = new List<UndoableCommand>();
 
     public MultiRangeCommand(UndoableCommand command):base(command.ts)
     {
         this.cmd = command;
-        range = ts.CurrentTB.Selection.Clone();
+        if (ts != null)
+            range = ts.CurrentTB.Selection.Clone();
     }
 
     public override void Execute()
     {
+        if (ts == null || range == null) return;
+
         commandsByRanges.Clear();
         var prevSelection = range.Clone();
         var iChar = -1;
@@ -675,11 +717,11 @@ public class MultiRangeCommand : UndoableCommand
         ts.CurrentTB.AllowInsertRemoveLines = false;
         try
         {
-            if (cmd is InsertTextCommand)
-                ExecuteInsertTextCommand(ref iChar, (cmd as InsertTextCommand).InsertedText);
+            if (cmd is InsertTextCommand _cmd0)
+                ExecuteInsertTextCommand(ref iChar, _cmd0.InsertedText);
             else
-            if (cmd is InsertCharCommand && (cmd as InsertCharCommand).c != '\x0' && (cmd as InsertCharCommand).c != '\b')//if not DEL or BACKSPACE
-                ExecuteInsertTextCommand(ref iChar, (cmd as InsertCharCommand).c.ToString());
+            if (cmd is InsertCharCommand _cmd1 && _cmd1.c != '\x0' && _cmd1.c != '\b')//if not DEL or BACKSPACE
+                ExecuteInsertTextCommand(ref iChar, _cmd1.c.ToString());
             else
                 ExecuteCommand(ref iChar);
         }
@@ -704,6 +746,8 @@ public class MultiRangeCommand : UndoableCommand
 
     private void ExecuteInsertTextCommand(ref int iChar, string text)
     {
+        if (ts == null || range == null) return;
+
         var lines = text.Split('\n');
         var iLine = 0;
         foreach (var r in range.GetSubRanges(true))
@@ -732,6 +776,8 @@ public class MultiRangeCommand : UndoableCommand
 
     private void ExecuteCommand(ref int iChar)
     {
+        if (ts == null || range == null) return;
+
         foreach (var r in range.GetSubRanges(false))
         {
             ts.CurrentTB.Selection = r;
@@ -745,6 +791,8 @@ public class MultiRangeCommand : UndoableCommand
 
     public override void Undo()
     {
+        if (ts == null || range == null) return;
+
         ts.CurrentTB.BeginUpdate();
         ts.CurrentTB.Selection.BeginUpdate();
         try
@@ -774,12 +822,14 @@ public class MultiRangeCommand : UndoableCommand
 /// </summary>
 public class SelectCommand : UndoableCommand
 {
-    public SelectCommand(TextSource ts):base(ts)
+    public SelectCommand(TextSource? ts):base(ts)
     {
     }
 
     public override void Execute()
     {
+        if (ts == null) return;
+
         //remember selection
         lastSel = new RangeInfo(ts.CurrentTB.Selection);
     }
@@ -790,14 +840,17 @@ public class SelectCommand : UndoableCommand
 
     public override void Undo()
     {
+        if (ts == null || lastSel == null) return;
+
         //restore selection
         ts.CurrentTB.Selection = new Range(ts.CurrentTB, lastSel.Start, lastSel.End);
     }
 
     public override UndoableCommand Clone()
     {
+
         var result = new SelectCommand(ts);
-        if(lastSel!=null)
+        if (lastSel != null && ts != null)
             result.lastSel = new RangeInfo(new Range(ts.CurrentTB, lastSel.Start, lastSel.End));
         return result;
     }

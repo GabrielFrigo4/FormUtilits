@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
-using System.Text;
-using System.Windows.Forms;
 
 namespace FormUtilits.VisualStudioControl
 {
     /// <summary>
-    /// Shows document map of FCTB
+    /// Shows document map of VisualStudioTextEditor
     /// </summary>
     public class DocumentMap : Control
     {
-        public EventHandler TargetChanged;
+        public EventHandler? TargetChanged;
 
-        VisualStudioTextEditor target;
+        VisualStudioTextEditor? target;
         private float scale = 0.3f;
         private bool needRepaint = true;
         private Place startPlace = Place.Empty;
         private bool scrollbarVisible = true;
 
-        [Description("Target FastColoredTextBox")]
-        public VisualStudioTextEditor Target
+        [Description("Target VisualStudioTextEditor")]
+        public VisualStudioTextEditor? Target
         {
             get { return target; }
             set
@@ -34,7 +28,7 @@ namespace FormUtilits.VisualStudioControl
                 target = value;
                 if (value != null)
                 {
-                    Subscribe(target);
+                    Subscribe(value);
                 }
                 OnTargetChanged();
             }
@@ -77,7 +71,7 @@ namespace FormUtilits.VisualStudioControl
             Application.Idle += Application_Idle;
         }
 
-        void Application_Idle(object sender, EventArgs e)
+        void Application_Idle(object? sender, EventArgs e)
         {
             if(needRepaint)
                 Invalidate();
@@ -105,17 +99,17 @@ namespace FormUtilits.VisualStudioControl
             target.VisibleRangeChanged += new EventHandler(Target_VisibleRangeChanged);
         }
 
-        protected virtual void Target_VisibleRangeChanged(object sender, EventArgs e)
+        protected virtual void Target_VisibleRangeChanged(object? sender, EventArgs e)
         {
             NeedRepaint();
         }
 
-        protected virtual void Target_SelectionChanged(object sender, EventArgs e)
+        protected virtual void Target_SelectionChanged(object? sender, EventArgs e)
         {
             NeedRepaint();
         }
 
-        protected virtual void Target_Scroll(object sender, ScrollEventArgs e)
+        protected virtual void Target_Scroll(object? sender, ScrollEventArgs e)
         {
             NeedRepaint();
         }
@@ -233,7 +227,8 @@ namespace FormUtilits.VisualStudioControl
         private void OnScroll()
         {
             Refresh();
-            target.Refresh();
+            if(target != null)
+                target.Refresh();
         }
 
         protected override void Dispose(bool disposing)

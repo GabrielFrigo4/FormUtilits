@@ -112,7 +112,7 @@ namespace FormUtilits.VisualStudioControl
         internal void CalcSize()
         {
             host.Size = listView.Size;
-            Size = new System.Drawing.Size(listView.Size.Width + 4, listView.Size.Height + 4);
+            Size = new Size(listView.Size.Width + 4, listView.Size.Height + 4);
         }
 
         public virtual void OnSelecting()
@@ -454,14 +454,9 @@ namespace FormUtilits.VisualStudioControl
                 }
                 else 
                 {
-                    bool contains = false;
-                    bool? containFrag = !Menu.Fragment?.Contains(tb.Selection.Start);
-                    if(containFrag.HasValue)
-                    {
-                        contains = containFrag.Value;
-                    }
+                    if (Menu.Fragment == null) return;
 
-                    if (contains)
+                    if (!Menu.Fragment.Contains(tb.Selection.Start))
                     {
                         if (tb.Selection.Start.iLine == Menu.Fragment?.End.iLine && tb.Selection.Start.iChar == Menu.Fragment.End.iChar + 1)
                         {

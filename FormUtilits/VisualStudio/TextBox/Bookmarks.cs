@@ -56,36 +56,30 @@ public class Bookmarks : BaseBookmarks
 
     protected virtual void tb_LineRemoved(object? sender, LineRemovedEventArgs e)
     {
-        for(int i=0; i<Count; i++)
-        if (items[i].LineIndex >= e.Index)
-        {
-            if (items[i].LineIndex >= e.Index + e.Count)
+        for (int i = 0; i < Count; i++)
+            if (items[i].LineIndex >= e.Index)
             {
-                items[i].LineIndex = items[i].LineIndex - e.Count;
-                continue;
+                if (items[i].LineIndex >= e.Index + e.Count)
+                {
+                    items[i].LineIndex = items[i].LineIndex - e.Count;
+                    continue;
+                }
+
+                var was = e.Index <= 0;
+                foreach (var b in items)
+                    if (b.LineIndex == e.Index - 1)
+                        was = true;
+
+                if (was)
+                {
+                    items.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    items[i].LineIndex = e.Index - 1;
+                }
             }
-
-            var was = e.Index <= 0;
-            foreach (var b in items)
-                if (b.LineIndex == e.Index - 1)
-                    was = true;
-
-            if(was)
-            {
-                items.RemoveAt(i);
-                i--;
-            }else
-                items[i].LineIndex = e.Index - 1;
-
-            //if (items[i].LineIndex == e.Index + e.Count - 1)
-            //{
-            //    items[i].LineIndex = items[i].LineIndex - e.Count;
-            //    continue;
-            //}
-            //
-            //items.RemoveAt(i);
-            //i--;
-        }
     }
 
     protected virtual void tb_LineInserted(object? sender, LineInsertedEventArgs e)
@@ -94,8 +88,8 @@ public class Bookmarks : BaseBookmarks
             if (items[i].LineIndex >= e.Index)
             {
                 items[i].LineIndex = items[i].LineIndex + e.Count;
-            }else
-            if (items[i].LineIndex == e.Index - 1 && e.Count == 1)
+            }
+            else if (items[i].LineIndex == e.Index - 1 && e.Count == 1)
             {
                 if(tb[e.Index - 1].StartSpacesCount == tb[e.Index - 1].Count)
                     items[i].LineIndex = items[i].LineIndex + e.Count;

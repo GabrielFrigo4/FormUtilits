@@ -186,7 +186,7 @@
             this.visualStudioTextEditor1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.visualStudioTextEditor1.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.visualStudioTextEditor1.IsReplaceMode = false;
-            this.visualStudioTextEditor1.Language = FormUtilits.VisualStudioControl.Language.CSharp;
+            this.visualStudioTextEditor1.Language = FormUtilits.VisualStudioControl.Language.Normal;
             this.visualStudioTextEditor1.LeftBracket = '(';
             this.visualStudioTextEditor1.LeftBracket2 = '{';
             this.visualStudioTextEditor1.Location = new System.Drawing.Point(40, 81);

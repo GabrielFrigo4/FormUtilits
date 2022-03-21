@@ -12,6 +12,14 @@
     <PackageIcon>VS2022.jpg</PackageIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\..\..\..\..\..\OneDrive\Imagens\Saved Pictures\Ico\VS2022.jpg">
       <Pack>True</Pack>
