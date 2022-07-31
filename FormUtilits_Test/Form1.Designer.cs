@@ -67,7 +67,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(833, 296);
+            this.tabPage1.Size = new System.Drawing.Size(819, 296);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Fragment";
             // 
@@ -120,7 +120,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 29);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(833, 296);
+            this.tabPage6.Size = new System.Drawing.Size(819, 296);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Vertex";
             // 
@@ -209,7 +209,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(833, 296);
+            this.tabPage3.Size = new System.Drawing.Size(819, 296);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -256,7 +256,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(680, 323);
+            this.tabPage5.Size = new System.Drawing.Size(815, 349);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "tabPage5";
             // 
