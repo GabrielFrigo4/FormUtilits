@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/GabrielFrigo4/VisualStudioControl</RepositoryUrl>
     <Copyright>MIT</Copyright>
     <PackageIcon>VS2022.jpg</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
