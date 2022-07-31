@@ -1,9 +1,9 @@
-﻿namespace FormUtilits.VisualStudioControl;
-public class VisualStudioColorTable : ProfessionalColorTable
+﻿namespace FormUtilits.Themes;
+public class ThemeColorTable : ProfessionalColorTable
 {
     private bool isDark = false;
 
-    public VisualStudioColorTable(bool isDark)
+    public ThemeColorTable(bool isDark)
     {
         this.isDark = isDark;
     }

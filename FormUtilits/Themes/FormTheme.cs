@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using FormUtilits.VisualStudioControl;
 using Microsoft.Win32;
 
 namespace FormUtilits.Themes;
@@ -138,8 +137,17 @@ public class FormTheme
         FormThemeLoop += SetTheme_Label;
         FormThemeLoop += SetTheme_MenuStrip;
         FormThemeLoop += SetTheme_IDarkMode;
-        FormThemeLoop += SetTheme_VisualStudioTabControl;
         SystemEvents.UserPreferenceChanged += (s, e) => { SystemEvents_UserPreferenceChanged(s, e); };
+    }
+
+    public void AddSetTheme(Func<Control, Color, Color, bool, bool, Tuple<bool, bool>> fnSetTheme)
+    {
+        FormThemeLoop += (sender, e) =>
+        {
+            Tuple<bool, bool> ret = fnSetTheme.Invoke(e.MyControl, e.Main, e.Other, e.IsLight, e.IsDark);
+            e.SetTheme = ret.Item1;
+            e.Stop = ret.Item2;
+        };
     }
 
     public void Init()
@@ -204,7 +212,7 @@ public class FormTheme
             other = Color.Black;
         }
 
-        FormThemeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem));
+        FormThemeStart?.Invoke(this, new(form, main, other, mode, IsLight, IsDark, IsSystem));
 
         void UpdateColorControls(Control myControl)
         {
@@ -217,7 +225,7 @@ public class FormTheme
                 SetWindowTheme(myControl.Handle, "Explorer", null);
             }
 
-            FormThemeLoopArgs args = new FormThemeLoopArgs(myControl, main, other, mode, IsLight, IsDark, IsSystem);
+            FormThemeLoopArgs args = new(myControl, main, other, mode, IsLight, IsDark, IsSystem);
             FormThemeLoop?.Invoke(this, args);
             if (args.SetTheme == false)
             {
@@ -367,7 +375,7 @@ public class FormTheme
             MenuStrip menuStrip = (MenuStrip)e.MyControl;
             e.MyControl.BackColor = e.Main;
             e.MyControl.ForeColor = e.Other;
-            menuStrip.Renderer = new ToolStripProfessionalRenderer(new VisualStudioColorTable(e.IsDark));
+            menuStrip.Renderer = new ToolStripProfessionalRenderer(new ThemeColorTable(e.IsDark));
             foreach (object item in menuStrip.Items)
             {
                 if (item is ToolStripMenuItem)
@@ -390,22 +398,6 @@ public class FormTheme
         if (e.MyControl is IFormTheme mode)
         {
             mode.SetMode(sender, e);
-            e.SetTheme = true;
-        }
-    }
-
-    void SetTheme_VisualStudioTabControl(object? sender, FormThemeLoopArgs e)
-    {
-        if (e.MyControl is VisualStudioTabControl control)
-        {
-            if (e.IsDark)
-            {
-                control.Theme = VisualStudioTabControlTheme.Dark;
-            }
-            else
-            {
-                control.Theme = VisualStudioTabControlTheme.Light;
-            }
             e.SetTheme = true;
         }
     }
