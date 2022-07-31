@@ -140,11 +140,12 @@ public class FormTheme
         SystemEvents.UserPreferenceChanged += (s, e) => { SystemEvents_UserPreferenceChanged(s, e); };
     }
 
-    public void AddSetTheme(Func<Control, Color, Color, bool, bool, Tuple<bool, bool>> fnSetTheme)
+    public void AddSetTheme(Func<Control, Color, Color, bool, bool, Action<Form, bool, bool, bool>, Action<Form, bool, bool, bool>, Tuple<bool, bool>> fnSetTheme)
     {
         FormThemeLoop += (sender, e) =>
         {
-            Tuple<bool, bool> ret = fnSetTheme.Invoke(e.MyControl, e.Main, e.Other, e.IsLight, e.IsDark);
+            Tuple<bool, bool> ret = fnSetTheme.Invoke(e.MyControl, e.Main, e.Other, e.IsLight, e.IsDark,
+                SetThemeModeForm, SetThemeModeFormAsync);
             e.SetTheme = ret.Item1;
             e.Stop = ret.Item2;
         };
@@ -168,10 +169,16 @@ public class FormTheme
         CurrentMode = FormThemeMode.System;
     }
 
+    public void SetThemeMode(bool isLight, bool isDark)
+    {
+        IsLight = isLight;
+        IsDark = isDark;
+
+        SetThemeModeForm(MainForm, IsLight, IsDark, true);
+    }
+
     public void SetThemeMode(FormThemeMode mode)
     {
-        bool isDark = IsDark, isLight = IsLight;
-
         CurrentMode = mode;
         if (CurrentMode == FormThemeMode.Light)
         {
@@ -192,14 +199,13 @@ public class FormTheme
             IsSystem = true;
         }
 
-        if (isDark != IsDark || isLight != IsLight)
-        {
-            SetThemeModeForm(MainForm, mode, true);
-        }
+        SetThemeModeForm(MainForm, IsLight, IsDark, true);
     }
 
-    public void SetThemeModeForm(Form form, FormThemeMode mode, bool setControlBox = true)
+    public void SetThemeModeForm(Form form, bool isLight, bool isDark, bool setControlBox = true)
     {
+        IsLight = isLight;
+        IsDark = isDark;
         Color main, other;
         if (IsDark)
         {
@@ -212,7 +218,7 @@ public class FormTheme
             other = Color.Black;
         }
 
-        FormThemeStart?.Invoke(this, new(form, main, other, mode, IsLight, IsDark, IsSystem));
+        FormThemeStart?.Invoke(this, new(form, main, other, IsLight, IsDark));
 
         void UpdateColorControls(Control myControl)
         {
@@ -225,7 +231,7 @@ public class FormTheme
                 SetWindowTheme(myControl.Handle, "Explorer", null);
             }
 
-            FormThemeLoopArgs args = new(myControl, main, other, mode, IsLight, IsDark, IsSystem);
+            FormThemeLoopArgs args = new(myControl, main, other, IsLight, IsDark);
             FormThemeLoop?.Invoke(this, args);
             if (args.SetTheme == false)
             {
@@ -254,13 +260,9 @@ public class FormTheme
             SetControlBox(form);
         }
     }
-    #endregion
 
-    #region My Public Async
-    public void SetThemeModeAsync(FormThemeMode mode)
+    public void SetThemeModeForm(Form form, FormThemeMode mode, bool setControlBox = true)
     {
-        bool isDark = IsDark, isLight = IsLight;
-
         CurrentMode = mode;
         if (CurrentMode == FormThemeMode.Light)
         {
@@ -281,15 +283,49 @@ public class FormTheme
             IsSystem = true;
         }
 
-        if (isDark != IsDark || isLight != IsLight)
-        {
-            SetThemeModeFormAsync(MainForm, mode, true);
-        }
+        SetThemeModeForm(form, IsLight, IsDark, setControlBox);
+    }
+    #endregion
+
+    #region My Public Async
+    public void SetThemeModeAsync(bool isLight, bool isDark)
+    {
+        IsLight = isLight;
+        IsDark = isDark;
+
+        SetThemeModeFormAsync(MainForm, IsLight, IsDark, true);
     }
 
-    public async void SetThemeModeFormAsync(Form form, FormThemeMode mode, bool setControlBox = true)
+    public void SetThemeModeAsync(FormThemeMode mode)
+    {
+        CurrentMode = mode;
+        if (CurrentMode == FormThemeMode.Light)
+        {
+            IsLight = true;
+            IsDark = false;
+            IsSystem = false;
+        }
+        else if (CurrentMode == FormThemeMode.Dark)
+        {
+            IsLight = false;
+            IsDark = true;
+            IsSystem = false;
+        }
+        else if (CurrentMode == FormThemeMode.System)
+        {
+            IsLight = IsSystemModeLight();
+            IsDark = IsSystemModeDark();
+            IsSystem = true;
+        }
+
+        SetThemeModeFormAsync(MainForm, IsLight, IsDark, true);
+    }
+
+    public async void SetThemeModeFormAsync(Form form, bool isLight, bool isDark, bool setControlBox = true)
     {
         Color main, other;
+        IsLight = isLight;
+        IsDark = isDark;
         if (IsDark)
         {
             main = Color.FromArgb(23, 23, 23);
@@ -301,7 +337,7 @@ public class FormTheme
             other = Color.Black;
         }
 
-        await Task.Run(() => FormThemeStart?.Invoke(this, new FormThemeStartArgs(form, main, other, mode, IsLight, IsDark, IsSystem)));
+        await Task.Run(() => FormThemeStart?.Invoke(this, new(form, main, other, IsLight, IsDark)));
 
         async void UpdateColorControlsAsync(Control myControl)
         {
@@ -314,7 +350,7 @@ public class FormTheme
                 SetWindowTheme(myControl.Handle, "Explorer", null);
             }
 
-            FormThemeLoopArgs args = new FormThemeLoopArgs(myControl, main, other, mode, IsLight, IsDark, IsSystem);
+            FormThemeLoopArgs args = new(myControl, main, other, IsLight, IsDark);
             await Task.Run(() => FormThemeLoop?.Invoke(this, args));
             if (args.SetTheme == false)
             {
@@ -342,6 +378,31 @@ public class FormTheme
         {
             SetControlBox(form);
         }
+    }
+
+    public void SetThemeModeFormAsync(Form form, FormThemeMode mode, bool setControlBox = true)
+    {
+        CurrentMode = mode;
+        if (CurrentMode == FormThemeMode.Light)
+        {
+            IsLight = true;
+            IsDark = false;
+            IsSystem = false;
+        }
+        else if (CurrentMode == FormThemeMode.Dark)
+        {
+            IsLight = false;
+            IsDark = true;
+            IsSystem = false;
+        }
+        else if (CurrentMode == FormThemeMode.System)
+        {
+            IsLight = IsSystemModeLight();
+            IsDark = IsSystemModeDark();
+            IsSystem = true;
+        }
+
+        SetThemeModeFormAsync(form, IsLight, IsDark, setControlBox);
     }
     #endregion
 

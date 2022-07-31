@@ -44,10 +44,16 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.visualStudioTabControl1 = new FormVisualStudioControl.VisualStudioTabControl();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.mdiControl1 = new WinFormsMDI2.MdiControl();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.visualStudioTabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage1
@@ -61,7 +67,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(715, 296);
+            this.tabPage1.Size = new System.Drawing.Size(833, 296);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Fragment";
             // 
@@ -114,7 +120,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 29);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(715, 296);
+            this.tabPage6.Size = new System.Drawing.Size(833, 296);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Vertex";
             // 
@@ -137,7 +143,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1717, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -185,7 +191,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 31);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(723, 329);
+            this.tabControl1.Size = new System.Drawing.Size(827, 329);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage2
@@ -193,7 +199,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(715, 296);
+            this.tabPage2.Size = new System.Drawing.Size(819, 296);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -203,16 +209,84 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(577, 260);
+            this.tabPage3.Size = new System.Drawing.Size(833, 296);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // visualStudioTabControl1
+            // 
+            this.visualStudioTabControl1.ActiveColor = System.Drawing.Color.LightGray;
+            this.visualStudioTabControl1.AllowDrop = true;
+            this.visualStudioTabControl1.BackTabColor = System.Drawing.Color.WhiteSmoke;
+            this.visualStudioTabControl1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.visualStudioTabControl1.ClosingButtonColor = System.Drawing.Color.Black;
+            this.visualStudioTabControl1.ClosingButtonColorMouseUp = System.Drawing.Color.Red;
+            this.visualStudioTabControl1.ClosingMessage = "";
+            this.visualStudioTabControl1.Controls.Add(this.tabPage4);
+            this.visualStudioTabControl1.Controls.Add(this.tabPage5);
+            this.visualStudioTabControl1.DesactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(236)))), ((int)(((byte)(236)))));
+            this.visualStudioTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.visualStudioTabControl1.HeaderColor = System.Drawing.Color.White;
+            this.visualStudioTabControl1.HorizontalLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.visualStudioTabControl1.Location = new System.Drawing.Point(16, 366);
+            this.visualStudioTabControl1.Name = "visualStudioTabControl1";
+            this.visualStudioTabControl1.SelectedIndex = 0;
+            this.visualStudioTabControl1.SelectedTextColor = System.Drawing.Color.Black;
+            this.visualStudioTabControl1.ShowClosingButton = false;
+            this.visualStudioTabControl1.ShowClosingMessage = false;
+            this.visualStudioTabControl1.Size = new System.Drawing.Size(823, 382);
+            this.visualStudioTabControl1.TabIndex = 3;
+            this.visualStudioTabControl1.TextColor = System.Drawing.Color.Black;
+            this.visualStudioTabControl1.Theme = FormVisualStudioControl.VisualStudioTabControlTheme.Light;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(815, 349);
+            this.tabPage4.TabIndex = 0;
+            this.tabPage4.Text = "tabPage4";
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(680, 323);
+            this.tabPage5.TabIndex = 1;
+            this.tabPage5.Text = "tabPage5";
+            // 
+            // mdiControl1
+            // 
+            this.mdiControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.mdiControl1.Location = new System.Drawing.Point(845, 103);
+            this.mdiControl1.Name = "mdiControl1";
+            this.mdiControl1.RemoveScreenFlickering = true;
+            this.mdiControl1.Size = new System.Drawing.Size(860, 645);
+            this.mdiControl1.TabIndex = 4;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(866, 68);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(94, 29);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1717, 760);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.mdiControl1);
+            this.Controls.Add(this.visualStudioTabControl1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
@@ -226,6 +300,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.visualStudioTabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -249,5 +324,10 @@
         private TabControl tabControl1;
         private TabPage tabPage2;
         private TabPage tabPage3;
+        private FormVisualStudioControl.VisualStudioTabControl visualStudioTabControl1;
+        private TabPage tabPage4;
+        private TabPage tabPage5;
+        private WinFormsMDI2.MdiControl mdiControl1;
+        private Button button4;
     }
 }
